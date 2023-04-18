@@ -7,7 +7,7 @@ public class ExpertBotUser extends AbstractUser {
 	}
 
 	public Card evaluateBoard() {
-		Card card= new Card();
+		Card card= new Card("nur","nütnüt");
 		return card;
 	}
 }
