@@ -6,6 +6,7 @@ public class Game {
 		System.out.println("LET THE SHOW BEGIN");
 		System.out.println("AAAAAAAAAAAAAAAA");
 		System.out.println("EMIRHAN BRANCE");
+		System.out.println("nursi");
 	}
 
 
