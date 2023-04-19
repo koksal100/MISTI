@@ -4,16 +4,29 @@ public class Card {
 	private int value;
 	private String suit;
 	private String cardface;
+	private String cardName;
 
-	Card() {
+
+	Card(String suit, String cardface) {
+		setCardface(cardface);
+		setSuit(suit);
+		setValue();
 
 	}
 
+	public Card() {
+
+	}
+
+	public String getCardName(){
+		return suit+ " " +cardface;
+	}
 	public String getSuit() {
 		return suit;
 	}
 
 	public void setSuit(String suit) {
+
 		this.suit = suit;
 	}
 
@@ -21,7 +34,7 @@ public class Card {
 		return cardface;
 	}
 
-	public void setCardfacet(String cardface) {
+	public void setCardface(String cardface) {
 		this.cardface = cardface;
 	}
 
