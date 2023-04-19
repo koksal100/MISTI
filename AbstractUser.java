@@ -64,8 +64,10 @@ public abstract class AbstractUser implements User {
 		System.out.println();
 	}
 
-	public final void playCardTo(ArrayList<Card> cards) {
-		cards.add(evaluateBoard());
+	public final void playCardTo(ArrayList<Card> boardCards) {
+		Card card= evaluateBoard();
+		boardCards.add(card);
+		this.getCurrentCards().remove(card);
 	}
 
 }
