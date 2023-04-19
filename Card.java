@@ -15,6 +15,10 @@ public class Card {
 		setValue();
 
 	}
+	Card() {
+
+
+	}
 
 	public String getCardName() {
 		return suit + " " + cardface;
