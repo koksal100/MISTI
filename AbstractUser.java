@@ -25,22 +25,6 @@ public abstract class AbstractUser implements User {
 
 	}
 
-	public void addToCurrentCards(Card card) {
-
-	}
-
-	public ArrayList<Card> getcollectedCards() {
-		return collectedCards;
-	}
-
-	public void addTocollectedCards(ArrayList<Card> cards) {
-
-	}
-
-	public ArrayList<Card> getCurrentCards() {
-		return currentCards;
-	}
-
 	public final void setName(String name) {
 		this.name = name;
 	}
@@ -49,20 +33,39 @@ public abstract class AbstractUser implements User {
 		return name;
 	}
 
-	public final void collectCards() {
+	public final void addToCurrentCards(Card card) {
+		this.getCurrentCards().add(card);
+	}
 
+	public final ArrayList<Card> getCurrentCards() {
+		return currentCards;
+	}
+
+	public final void collectCards(ArrayList<Card> boardCards) {
+		this.getcollectedCards().addAll(boardCards);
+		boardCards.clear();
+	}
+
+	public final ArrayList<Card> getcollectedCards() {
+		return collectedCards;
 	}
 
 	public final void showCurrentCards() {
-
+		for (int i = 0; i < this.getCurrentCards().size(); i++) {
+			System.out.print((i + 1) + " " + this.getCurrentCards().get(i).getCardName() + " ");
+		}
+		System.out.println();
 	}
 
 	public final void showCollectedCards() {
-
+		for (int i = 0; i < this.getcollectedCards().size(); i++) {
+			System.out.print((i + 1) + " " + this.getcollectedCards().get(i).getCardName() + "  ");
+		}
+		System.out.println();
 	}
 
-	public final void playCard() {
-
+	public final void playCardTo(ArrayList<Card> cards) {
+		cards.add(evaluateBoard());
 	}
 
 }
