@@ -2,6 +2,8 @@ package SE116PROJECT;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 public class Deck {
     private ArrayList<Card> cards;
@@ -48,8 +50,17 @@ ArrayList<Card> cards = new ArrayList<Card>(52);
         Collections.shuffle(cards);
     }
     public void cutDeck(){
-
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Please enter where do you want to cut the deck");
+        int cut = scan.nextInt();
+        List<Card> firstHalf = cards.subList(0,cut);
+        List<Card> secondHalf = cards.subList(cut,cards.size());
+        ArrayList<Card> newCards = new ArrayList<Card>();
+        newCards.addAll(secondHalf);
+        newCards.addAll(firstHalf);
+        cards = newCards;
     }
+
     public ArrayList<Card> getCards() {
         return cards;
     }
