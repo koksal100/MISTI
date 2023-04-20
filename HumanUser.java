@@ -6,7 +6,12 @@ public class HumanUser extends AbstractUser {
 		super(name);
 	}
 
-	public Card evaluateBoard() {
+
+
+
+
+
+	public Card findBestCardToPlay() {
 		Card card;
 		Scanner sc = new Scanner(System.in);
 		boolean valid_card_decision = false;
