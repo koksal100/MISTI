@@ -9,7 +9,7 @@ public class NoviceBotUser extends AbstractUser {
 
 	}
 	
-	public Card evaluateBoard() {
+	public Card findBestCardToPlay() {
 		Card card= new Card();
 		return card;
 	}

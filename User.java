@@ -12,7 +12,7 @@ public interface User {
 
 	public void playCardTo(ArrayList<Card> cards);
 
-	public Card evaluateBoard();
+	public Card findBestCardToPlay( );
 
 	
 }

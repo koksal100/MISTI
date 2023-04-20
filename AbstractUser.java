@@ -6,7 +6,7 @@ public abstract class AbstractUser implements User {
 	// collectCards(), showCurrentCards(),showCollectedCards(),playCard() will be
 	// implemented there, because
 	// they are same for all user types
-	// evaluateBoard() function will be implemented in subclasses.
+	// findBestCardToPlay() function will be implemented in subclasses.
 	// this class also have name and score attributes and there are suitable setters
 	// and getters methods for them
 	// and one parameter constructor.
@@ -65,7 +65,7 @@ public abstract class AbstractUser implements User {
 	}
 
 	public final void playCardTo(ArrayList<Card> boardCards) {
-		Card card= evaluateBoard();
+		Card card= findBestCardToPlay();
 		boardCards.add(card);
 		this.getCurrentCards().remove(card);
 	}

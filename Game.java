@@ -34,6 +34,7 @@ public class Game {
 		ArrayList<Card> board=new ArrayList<>();
 
         //Creating possible players
+		AbstractUser player1=null;
 		AbstractUser player2=null;
 		AbstractUser player3=null;
 		AbstractUser player4=null;
@@ -67,12 +68,20 @@ public class Game {
 		switch (intPlayerNumber){
 
 			case 1:
+				System.out.println("Please choose first player's expertness level: 1-NoviceBot 2-RegularBot 3-ExpertBot 4-Human");
+				expertnessLevel=scan.next();
+				intExpertnessLevel=Integer.parseInt(expertnessLevel);
+				player1=choosingAPlayersExpertnessLevel(intExpertnessLevel,noviceBotUser,regularBotUser,expertBotUser);
 				System.out.println("Please choose second player's expertness level: 1-NoviceBot 2-RegularBot 3-ExpertBot");
 				 expertnessLevel=scan.next();
 				 intExpertnessLevel=Integer.parseInt(expertnessLevel);
 				player2=choosingAPlayersExpertnessLevel(intExpertnessLevel,noviceBotUser,regularBotUser,expertBotUser);
 				break;
 			case 2:
+				System.out.println("Please choose first player's expertness level: 1-NoviceBot 2-RegularBot 3-ExpertBot 4-Human");
+				expertnessLevel=scan.next();
+				intExpertnessLevel=Integer.parseInt(expertnessLevel);
+				player1=choosingAPlayersExpertnessLevel(intExpertnessLevel,noviceBotUser,regularBotUser,expertBotUser);
 				System.out.println("Please choose second player's expertness level: 1-NoviceBot 2-RegularBot 3-ExpertBot");
 				 expertnessLevel=scan.next();
 				intExpertnessLevel=Integer.parseInt(expertnessLevel);
