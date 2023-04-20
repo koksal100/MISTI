@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class RegularBotUser extends AbstractUser {
 	private Card topCard;
+	private int totalBoardPoint=0;
 
 	RegularBotUser(String name) {
 		super(name);
@@ -24,4 +25,14 @@ public class RegularBotUser extends AbstractUser {
 			this.topCard=null;
 		}
 	}
+
+	public void calculateTotalBoardPoint(ArrayList<Card> board){ //null hatası gelebilir
+  if(topCard==null){
+	totalBoardPoint=0;
+}else{
+		for(int i=0;i<board.size();i++){
+			this.totalBoardPoint+=board.get(i).getValue();
+		}
+	}}
+
 }

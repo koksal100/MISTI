@@ -9,7 +9,7 @@ public interface User {
 	public void showCurrentCards();
 
 	public void showCollectedCards();
-
+public void calculateCollectedCardsScore();
 	public void playCardTo(ArrayList<Card> cards);
 
 	public Card findBestCardToPlay( );

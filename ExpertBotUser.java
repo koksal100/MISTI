@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ExpertBotUser extends AbstractUser {
 	private ArrayList<Card> allPlayedCards;
 	private Card topCard;
+	private int totalBoardPoint;
 	ExpertBotUser(String name) {
 		super(name);
 	}
@@ -24,5 +25,14 @@ public class ExpertBotUser extends AbstractUser {
 
 	public void keepTrackOfAllPlayedCards(Card playedCard){
 		allPlayedCards.add(playedCard);
+	}
+	public void calculateTotalBoardPoint(ArrayList<Card> board){ //null hatası gelebilir
+		if(topCard==null){
+			totalBoardPoint=0;
+		}
+
+		for(int i=0;i<board.size();i++){
+			this.totalBoardPoint+=board.get(i).getValue();
+		}
 	}
 }

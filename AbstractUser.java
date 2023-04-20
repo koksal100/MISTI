@@ -63,6 +63,12 @@ public abstract class AbstractUser implements User {
 		}
 		System.out.println();
 	}
+	public void calculateCollectedCardsScore(){
+		for(int i=0;i<collectedCards.size();i++){
+				this.score+=collectedCards.get(i).getValue();
+			}
+
+	}
 
 	public final void playCardTo(ArrayList<Card> boardCards) {
 		Card card= findBestCardToPlay();
