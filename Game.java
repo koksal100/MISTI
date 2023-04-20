@@ -1,6 +1,10 @@
 package SE116PROJECT;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Formatter;
+import java.io.FileWriter;import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
@@ -179,4 +183,78 @@ public static ArrayList<AbstractUser> settingPlayersOptions(int numberOfPlayers)
 
 
 
-	}}
+	}
+	public void showTopTenUsers(ArrayList<AbstractUser> users) {
+
+		for (int i = 0; i < users.size(); i++) {
+
+			System.out.println(
+					(i + 1) + ". PLAYER'S NAME:" + users.get(i).getName() + ", SCORE:" + users.get(i).getScore());
+		}
+	}
+
+
+	public static void takeTopTenUsersFileTo(ArrayList<AbstractUser> topTenUsers){
+		String[] informations = new String[3];
+		Scanner reader = null;
+
+		try {
+			reader = new Scanner(Paths.get("top_ten_users.txt"));
+			while (reader.hasNextLine()) {
+				AbstractUser temp_user = null;
+				informations = reader.nextLine().split(",");
+
+				switch (informations[2]){
+					case "RegularBotUser":
+						temp_user=new RegularBotUser(informations[0].trim());
+						break;
+					case "NoviceBotUser":
+						temp_user=new NoviceBotUser(informations[0].trim());
+						break;
+					case "ExpertBotUser":
+						temp_user=new ExpertBotUser(informations[0].trim());
+						break;
+					case "HumanUser":
+						temp_user=new HumanUser(informations[0].trim());
+						break;
+				}
+				temp_user.setScore(Integer.parseInt(informations[1].trim()));
+				temp_user.raceWithOthers(topTenUsers);
+
+			}
+		} catch (Exception e) {
+
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+
+	}
+	public static void writeToFile(ArrayList<AbstractUser> topTenUsers){
+		Scanner reader = null;
+		Formatter f = null;
+		int top_10_users_index = 0;
+
+		try (FileWriter fw = new FileWriter("top_ten_users.txt")) {
+
+
+			for(int i = 0;i<topTenUsers.size();i++) {
+
+				reader = new Scanner(Paths.get("top_ten_users.txt"));
+				fw.write(topTenUsers.get(i).getName() + ", "
+						+ Integer.toString(topTenUsers.get(i).getScore())+", "+ topTenUsers.get(i).getClass().getName());
+				fw.write("\n");
+			}
+		} catch (Exception e) {
+			System.out.println("SOMETHING WENT WRONG");
+		} finally {
+			if (f != null) {
+				f.close();
+			}
+		}
+	}
+
+
+
+}

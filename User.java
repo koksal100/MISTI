@@ -11,8 +11,8 @@ public interface User {
 	public void showCollectedCards();
     public void calculateCollectedCardsScore();
 	public void playCardTo(ArrayList<Card> cards);
-
 	public Card findBestCardToPlay( );
+	public  void raceWithOthers(ArrayList<AbstractUser> topTenUsers);
 
 	
 }

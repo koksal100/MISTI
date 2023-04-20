@@ -33,6 +33,14 @@ public abstract class AbstractUser implements User {
 		return name;
 	}
 
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 	public final void addToCurrentCards(Card card) {
 		this.getCurrentCards().add(card);
 	}
@@ -75,5 +83,21 @@ public abstract class AbstractUser implements User {
 		boardCards.add(card);
 		this.getCurrentCards().remove(card);
 	}
+	public final void raceWithOthers(ArrayList<AbstractUser> topTenUsers){
+
+		for (int i = 0;i<topTenUsers.size();i++){
+			if(topTenUsers.get(i).getScore()<this.getScore()){
+				topTenUsers.add(i,this);
+			}
+			if(topTenUsers.size()>10){
+				topTenUsers.remove(topTenUsers.size()-1);
+			}else if (topTenUsers.size()<10){
+				topTenUsers.add(this);
+			}
+		}
+
+	}
+
+
 
 }
