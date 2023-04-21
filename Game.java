@@ -255,6 +255,25 @@ public static ArrayList<AbstractUser> settingPlayersOptions(int numberOfPlayers)
 		}
 	}
 
+	public static void AssignScoreTo(AbstractUser user,ArrayList<Card> boardCards){
+		//this function must be called before the board cards are moved to the user's collected cards.
+		if(boardCards.size()==2){
+			if(boardCards.get(0).getCardface().equals(boardCards.get(1).getCardface())){
+				for(Card card:boardCards){
+					user.setScore(user.getScore()+card.getValue()*5);
+				}
+			}else{
+				for(Card card:boardCards){
+					user.setScore(user.getScore()+card.getValue());
+				}
+			}
+		} else{
+			for(Card card:boardCards){
+				user.setScore(user.getScore()+card.getValue());
+			}
+		}
+	}
+
 
 
 }
