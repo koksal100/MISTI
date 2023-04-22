@@ -85,10 +85,11 @@ public abstract class AbstractUser implements User {
 	}
 	public final void raceWithOthers(ArrayList<AbstractUser> topTenUsers){
 
-		for (int i = 0;i<topTenUsers.size();i++){
-			if(topTenUsers.get(i).getScore()<this.getScore()){
-				topTenUsers.add(i,this);
+		for (int i = 0;i<topTenUsers.size();i++) {
+			if (topTenUsers.get(i).getScore() < this.getScore()) {
+				topTenUsers.add(i, this);
 			}
+		}
 			if(topTenUsers.size()>10){
 				topTenUsers.remove(topTenUsers.size()-1);
 			}else if (topTenUsers.size()<10){
@@ -100,4 +101,4 @@ public abstract class AbstractUser implements User {
 
 
 
-}
+
