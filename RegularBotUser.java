@@ -23,7 +23,7 @@ public class RegularBotUser extends AbstractUser {
         boolean isValeFound = false;
         boolean isValeUsefull = false;
         boolean isMatchedCardUsefull = false;
-        Card selectedCard;
+
 
         ArrayList<String> cardFaces = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class RegularBotUser extends AbstractUser {
             cardFaces.add(getCurrentCards().get(i).getCardface());
         }
 
-        if (getCurrentCards().contains("VALE")) {
+        if (cardFaces.contains("VALE")) {
             isValeFound = true;
             valeIndex = getCurrentCards().indexOf("VALE");
         }
@@ -55,46 +55,53 @@ public class RegularBotUser extends AbstractUser {
         }
 
 
-        while (!isCardAssigned) {
+        while (!isCardAssigned) { //atacak bir kart seçilene kadar while döngüsü döner
 
             if (isMatchedCardUsefull) {
                 isCardAssigned = true;
                 return getCurrentCards().get(matchedCardIndex);
-            } else if (isValeUsefull == true) {
+            } else if (isValeUsefull) {
                 isCardAssigned = true;
                 return getCurrentCards().get(valeIndex);
             }
 
+
             if (!isValeUsefull && !isMatchedCardUsefull) {
                 boolean isThereAnotherOption = false;
-//checks for a card except vale and top card
+                    //checks for a card except vale and top card
                 for (Card cards : getCurrentCards()) {
-                    if (!cards.equals("VALE") || !cards.equals(topCard.getCardface())) {
+                    if (!cards.getCardface().equals("VALE") && !cards.getCardface().equals(topCard.getCardface())) {
                         isThereAnotherOption = true;
                         break;
                     }
                 }
+
                 if (isThereAnotherOption) {
-//list cards except top card and vale
+                    //list cards except top card and vale
                     ArrayList<Card> otherOptions = new ArrayList<>();
 
 
                     for (int i = 0; i < getCurrentCards().size(); i++) {
-                        if (!getCurrentCards().get(i).equals("VALE") && !getCurrentCards().get(i).equals(topCard.getCardface())) {
+                        if (!getCurrentCards().get(i).getCardface().equals("VALE") && !getCurrentCards().get(i).getCardface().equals(topCard.getCardface())) {
                             otherOptions.add(getCurrentCards().get(i));
                         }
                     }
+                    //expert bot
+
                     int min = otherOptions.get(0).getValue();
+                    int minValueIndex = 0;
 
                     for (int i = 0; i < otherOptions.size(); i++) {
                         if (otherOptions.get(i).getValue() < min) {
                             min = otherOptions.get(i).getValue();
+                            minValueIndex = i;
                             isCardAssigned = true;
-                            return otherOptions.get(i);
                         }
-                    }
 
-                } else {
+                    }
+                    return otherOptions.get(minValueIndex);
+                    //expert bot
+                } else { //ortadan kart almak zorundayız çünkü elimizde sadece J ve topcarda eşit kartlar var
                     isCardAssigned = true;
                     return getCurrentCards().get(0);
 
