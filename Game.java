@@ -274,6 +274,17 @@ public static ArrayList<AbstractUser> settingPlayersOptions(int numberOfPlayers)
 		}
 	}
 
+	public static void evaluatePlayedCard(AbstractUser user, ArrayList<Card> boardCards){
+		if(boardCards.size()>1){
+			Card lastPlayedCard = boardCards.get(boardCards.size()-1);
+			Card oldLastPlayedCard = boardCards.get(boardCards.size()-2);
+			if(lastPlayedCard.getCardface().equals("Vale")||lastPlayedCard.getCardface().equals(oldLastPlayedCard.getCardface())){
+				AssignScoreTo(user,boardCards);
+				user.collectCards(boardCards);
+			}
+		}
+	}
+
 
 
 }
