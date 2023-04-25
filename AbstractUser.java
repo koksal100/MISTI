@@ -13,8 +13,8 @@ public abstract class AbstractUser implements User {
 
 	private String name;
 	private int score;
-	private ArrayList<Card> currentCards;
-	private ArrayList<Card> collectedCards;
+	private ArrayList<Card> currentCards=new ArrayList<>();
+	private ArrayList<Card> collectedCards=new ArrayList<>();
 
 	AbstractUser(String name) {
 		setName(name);

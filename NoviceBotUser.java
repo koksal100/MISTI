@@ -5,11 +5,12 @@ import java.util.Random;
 public class NoviceBotUser extends AbstractUser {
 
     NoviceBotUser(String name) {
+
         super(name);
     }
 
     NoviceBotUser() {
-
+        this.setName("NoviceBot");
     }
 
     public Card findBestCardToPlay() {
