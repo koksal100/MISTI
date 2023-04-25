@@ -7,8 +7,8 @@ public class ExpertBotUser extends AbstractUser {
 	private Card topCard;
 	private int totalBoardPoint;
 	private boolean isCardEnough = false;
-	private Card nonPlayedCard;
-	private boolean Cardfunc =false;
+	private Card nonPlayCard;
+
 
 	ExpertBotUser(String name) {
 		super(name);
@@ -18,59 +18,102 @@ public class ExpertBotUser extends AbstractUser {
 	}
 
 	public Card findBestCardToPlay() {//NULL HATASINA DİKKAT !!!
-		Card card = new Card();
-		boolean isCardMatched = false;
+		int valeIndex = 0;
+		int matchedCardIndex = 0;
+		boolean isCardAssigned = false;
+		boolean isMatchedCardFaceFound = false;
+		boolean isValeFound = false;
+		boolean isValeUsefull = false;
+		boolean isMatchedCardUsefull = false;
+		//ARRAYLİSTLER
+		ArrayList<Card> otherOptions = new ArrayList<>();
+		ArrayList<String> cardFaces = new ArrayList<>();
 
-		if (totalBoardPoint >= 0) {
-			for (int i = 0; i < getCurrentCards().size(); i++) {
-				if (getCurrentCards().get(i).getCardface().equals(topCard.getCardface()) && getCurrentCards().get(i).getValue() + totalBoardPoint >= 0) {
-					isCardMatched = true;
-					return getCurrentCards().get(i);
-				} else if (getCurrentCards().get(i).getCardface().equals("Vale") && getCurrentCards().get(i).getValue() + totalBoardPoint >= 0) {
-					isCardMatched = true;
-					return getCurrentCards().get(i);
-				}
-			}
-			if (!isCardMatched) {
-				card = playMostFrequentCard();
-				if (isCardEnough == true && card.getValue() + totalBoardPoint >= 0) {
-					return card;
-				} else {
-					int indexOfMinValue = 0;
-					int lowestValueCard = getCurrentCards().get(0).getValue();
-					for (int i = 1; i < getCurrentCards().size(); i++) {
-						if (getCurrentCards().get(i).getValue() < lowestValueCard) {
-							lowestValueCard = getCurrentCards().get(i).getValue();
-							indexOfMinValue = i;
-						}
-					}
-					return getCurrentCards().get(indexOfMinValue);
-				}
-			}
-		} else {
-			for (int i = 0; i < getCurrentCards().size(); i++) {
-				if (getCurrentCards().get(i).getCardface().equals(topCard.getCardface()) && getCurrentCards().get(i).getValue() + totalBoardPoint >= 0) {
-					isCardMatched = true;
-					return getCurrentCards().get(i);
-				} else if (getCurrentCards().get(i).getCardface().equals("Vale") && getCurrentCards().get(i).getValue() + totalBoardPoint >= 0) {
-					isCardMatched = true;
-					return getCurrentCards().get(i);
-				} else if (getCurrentCards().get(i).getCardface().equals(topCard.getCardface()) && getCurrentCards().get(i).getValue() + totalBoardPoint < 0) {
-					Cardfunc = true;
-					isCardMatched = true;
-					nonPlayedCard = getCurrentCards().get(i);
-				}
-			}
-			if (isCardMatched == true && Cardfunc == true) {
-              card=isCardMatched(isCardMatched,card);
-			  if(card !=nonPlayedCard){
-				  return card;
-			  }else{
-				  card=isCardMatched(isCardMatched,card);
-			  }
+		for (int i = 0; i < getCurrentCards().size(); i++) {
+			cardFaces.add(getCurrentCards().get(i).getCardface());
+		}
+
+		if (getCurrentCards().contains("VALE")) {
+			isValeFound = true;
+			valeIndex = getCurrentCards().indexOf("VALE");
+		}
+
+		if (cardFaces.contains(topCard.getCardface())) {
+			isMatchedCardFaceFound = true;
+			matchedCardIndex = cardFaces.indexOf(topCard.getCardface());
+		}
+		if (isMatchedCardFaceFound) {
+			if (totalBoardPoint + getCurrentCards().get(matchedCardIndex).getValue() > 0) {
+				isMatchedCardUsefull = true;
 			}
 		}
-		   return card;
+
+		if (isValeFound) {
+			if (totalBoardPoint + getCurrentCards().get(valeIndex).getValue() > 0) {
+				isValeUsefull = true;
+			}
+		}
+		while (isCardAssigned == false) {
+			if (isMatchedCardUsefull) {
+				isCardAssigned = true;
+				return getCurrentCards().get(matchedCardIndex);
+			} else if (isValeUsefull == true) {
+				isCardAssigned = true;
+				return getCurrentCards().get(valeIndex);
+			}
+			if (!isValeUsefull && !isMatchedCardUsefull) {
+				boolean isThereAnotherOption = false;
+				//checks for a card except vale and top card
+				for (Card cards : getCurrentCards()) {
+					if (!cards.equals("VALE") || !cards.equals(topCard.getCardface())) {
+						isThereAnotherOption = true;
+						break;
+					}
+				}
+				if (isThereAnotherOption) {
+					//list cards except top card and vale
+					for (int i = 0; i < getCurrentCards().size(); i++) {
+						if (!getCurrentCards().get(i).equals("VALE") && !getCurrentCards().get(i).equals(topCard.getCardface())) {
+							otherOptions.add(getCurrentCards().get(i));
+						}
+					}
+					if (totalBoardPoint >= 0) {
+						Card mostFrequentCard = playMostFrequentCard(otherOptions);
+						if (isCardEnough) {
+							isCardAssigned = true;
+							return mostFrequentCard;
+						} else {
+							int min = otherOptions.get(0).getValue();
+							int minValueIndex = 0;
+
+							for (int i = 0; i < otherOptions.size(); i++) {
+								if (otherOptions.get(i).getValue() < min) {
+									min = otherOptions.get(i).getValue();
+									minValueIndex = i;
+									isCardAssigned = true;
+								}
+
+							}
+							return otherOptions.get(minValueIndex);
+						}
+					} else {
+						Card leastPlayedCard = leastPlayedCard(otherOptions);
+						if (isCardEnough) {
+							isCardAssigned = true;
+							return leastPlayedCard;
+						}
+					}
+				} else {
+					isCardAssigned = true;
+					if(cardFaces.contains(topCard.getCardface())){
+						return getCurrentCards().get(matchedCardIndex);
+					}else {
+						return getCurrentCards().get(valeIndex);
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	public void findTopCard(ArrayList<Card> board) {
@@ -94,64 +137,46 @@ public class ExpertBotUser extends AbstractUser {
 			this.totalBoardPoint += board.get(i).getValue();
 		}
 	}
-	public Card playMostFrequentCard() {
-		Card mostFrequentCard = getCurrentCards().get(0);
-		int maxPlayedNumber = 0;
 
+	public Card playMostFrequentCard(ArrayList<Card> otherOptions) {
+		Card mostFrequentCard = otherOptions.get(0);
+		int maxPlayedNumber = 0;
+		isCardEnough = false;
 		// Loop over the user's current cards and count their occurrences
 
-		for (Card card : getCurrentCards()) {
+		for (Card card : otherOptions) {
 			int PlayedNumber = 0;
 			for (Card playedCard : allPlayedCards) {
 				if (playedCard.getCardface().equals(card.getCardface())) {
 					PlayedNumber++;
 				}
 			}
-			if (PlayedNumber > maxPlayedNumber && PlayedNumber>1) {
-				isCardEnough=true;
+			if (PlayedNumber > maxPlayedNumber && PlayedNumber > 1) {
+				isCardEnough = true;
 				mostFrequentCard = card;
 				maxPlayedNumber = PlayedNumber;
 			}
 		}
-
 		// Return the most frequent card, or null if no card was found
 		return mostFrequentCard;
 	}
-	public Card leastPlayedCard(){
-		Card leastPlayedCard = getCurrentCards().get(0);
-		int leastPlayedNumber =0;
-		for (Card card : getCurrentCards()) {
+
+	public Card leastPlayedCard(ArrayList<Card> otherOptions) {
+		Card leastPlayedCard = otherOptions.get(0);
+		int leastPlayedNumber = 0;
+		for (Card card : otherOptions) {
 			int PlayedNumber = 0;
 			for (Card playedCard : allPlayedCards) {
 				if (playedCard.getCardface().equals(card.getCardface())) {
 					PlayedNumber++;
 				}
 			}
-			if (PlayedNumber < leastPlayedNumber && PlayedNumber<3) {
-				isCardEnough=true;
+			if (PlayedNumber < leastPlayedNumber && PlayedNumber < 3) {
+				isCardEnough = true;
 				leastPlayedCard = card;
 				leastPlayedNumber = PlayedNumber;
 			}
 		}
 		return leastPlayedCard;
 	}
-  public Card isCardMatched(boolean isCardMatched,Card card) {
-	  if (isCardMatched == false) {
-		  card = leastPlayedCard();
-		  if (isCardEnough == true && card.getValue() + totalBoardPoint < 0) {
-			  return card;
-		  } else {
-			  int indexOfMinValue = 0;
-			  int lowestValueCard = getCurrentCards().get(0).getValue();
-			  for (int i = 1; i < getCurrentCards().size(); i++) {
-				  if (getCurrentCards().get(i).getValue() < lowestValueCard) {
-					  lowestValueCard = getCurrentCards().get(i).getValue();
-					  indexOfMinValue = i;
-				  }
-			  }
-			  return getCurrentCards().get(indexOfMinValue);
-		  }
-	  }
-	  return card;
-  }
 }
