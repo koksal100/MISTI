@@ -15,6 +15,7 @@ public class ExpertBotUser extends AbstractUser {
 	}
 
 	ExpertBotUser() {
+		this.setName("ExpertBot");
 	}
 
 	public Card findBestCardToPlay() {//NULL HATASINA DİKKAT !!!

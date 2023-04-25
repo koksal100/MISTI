@@ -11,6 +11,7 @@ public class RegularBotUser extends AbstractUser {
     }
 
     RegularBotUser() {
+        this.setName("RegularBot");
 
     }
 
