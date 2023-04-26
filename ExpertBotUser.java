@@ -3,7 +3,7 @@ package SE116PROJECT;
 import java.util.ArrayList;
 
 public class ExpertBotUser extends AbstractUser {
-	private ArrayList<Card> allPlayedCards;
+	private ArrayList<Card> allPlayedCards=new ArrayList<>();
 	private Card topCard;
 	private int totalBoardPoint;
 	private boolean isCardEnough = false;
@@ -125,8 +125,8 @@ public class ExpertBotUser extends AbstractUser {
 		}
 	}
 
-	public void keepTrackOfAllPlayedCards(Card playedCard) {
-		allPlayedCards.add(playedCard);
+	public void keepTrackOfAllPlayedCards() {
+		allPlayedCards.add(this.topCard);
 	}
 
 	public void calculateTotalBoardPoint(ArrayList<Card> board) { //null hatası gelebilir
