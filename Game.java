@@ -43,22 +43,42 @@ public class Game {
                 dealHands(false, players, board, gameDeck);
 
             }
-            for (AbstractUser user : players) {
-                System.out.println(user.getName()+"'s hand:");
-                user.showCurrentCards();
+            for(int a = 0 ; a<4;a++) {
+                for (AbstractUser user : players) {
+                    System.out.println(user.getName() + "'s hand:");
+                    user.showCurrentCards();
+                }
+                for (AbstractUser user : players) {
+                    keepTrackForBots(players, board);
+                    System.out.println("IT IS " + user.getName() + "'S TURN");
+                    user.playCardTo(board);
+                    keepTrackForBots(players, board);
+                    user.showCurrentCards();
+                    System.out.println("---------THIS IS BOARD--------");
+                    for (Card card : board) {
+                        System.out.print(card.getCardName() + " ");
+                    }
+                    System.out.println();
+                    evaluatePlayedCard(user, board);
+                }
             }
-            for (AbstractUser user : players) {
 
-               user.playCardTo(board);
-               user.showCurrentCards();
-               for (Card card:board){
-                   System.out.print(card.getCardName()+" ");
-               }
-                System.out.println();
+
+
+        }
+    }
+
+    public static void keepTrackForBots(ArrayList<AbstractUser> players, ArrayList<Card> Board){
+        for(AbstractUser user:players){
+            if(user instanceof ExpertBotUser expert){
+                expert.findTopCard(Board);
+                expert.keepTrackOfAllPlayedCards();
+                expert.calculateTotalBoardPoint(Board);
+
+            }else if(user instanceof RegularBotUser regular){
+                regular.findTopCard(Board);
+                regular.calculateTotalBoardPoint(Board);
             }
-
-
-
         }
     }
 
