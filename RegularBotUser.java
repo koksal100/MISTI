@@ -1,8 +1,10 @@
 package SE116PROJECT;
-
+import java.util.Random;
 import java.util.ArrayList;
 
 public class RegularBotUser extends AbstractUser {
+    private static int numberOfProducedPlayer=1;
+    private static Random rd = new Random();
     private Card topCard;
     private int totalBoardPoint = 0;
 
@@ -11,8 +13,7 @@ public class RegularBotUser extends AbstractUser {
     }
 
     RegularBotUser() {
-        this.setName("RegularBot");
-
+        this.setName("RegularBot"+" "+numberOfProducedPlayer++);
     }
 
     public Card findBestCardToPlay() { //NULL HATASINA DİKKAT !!!
@@ -24,6 +25,7 @@ public class RegularBotUser extends AbstractUser {
         boolean isValeFound = false;
         boolean isValeUsefull = false;
         boolean isMatchedCardUsefull = false;
+        ArrayList<Card> otherOptions = new ArrayList<>();
 
 
         ArrayList<String> cardFaces = new ArrayList<>();
@@ -37,6 +39,16 @@ public class RegularBotUser extends AbstractUser {
             isValeFound = true;
             valeIndex = getCurrentCards().indexOf("VALE");
         }
+        if(topCard==null){
+            for (int i = 0; i < getCurrentCards().size(); i++) {
+                if (!getCurrentCards().get(i).equals("VALE") ) {
+                    otherOptions.add(getCurrentCards().get(i));
+                }
+            }
+            Card card = otherOptions.get(rd.nextInt(otherOptions.size()));
+            return card;
+        }
+
 
         if (cardFaces.contains(topCard.getCardface())) {
             isMatchedCardFaceFound = true;
@@ -79,7 +91,6 @@ public class RegularBotUser extends AbstractUser {
 
                 if (isThereAnotherOption) {
                     //list cards except top card and vale
-                    ArrayList<Card> otherOptions = new ArrayList<>();
 
 
                     for (int i = 0; i < getCurrentCards().size(); i++) {

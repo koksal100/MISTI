@@ -43,39 +43,71 @@ public class Game {
                 dealHands(false, players, board, gameDeck);
 
             }
+            for(AbstractUser user: players ){
+                if(user instanceof ExpertBotUser expert &&i ==0){
+                    for(Card card:board) {
+                        expert.getAllPlayedCards().add(card);
+                    }
+
+                }
+            }
+
             for(int a = 0 ; a<4;a++) {
                 for (AbstractUser user : players) {
                     System.out.println(user.getName() + "'s hand:");
                     user.showCurrentCards();
                 }
+                printBoard(board);
                 for (AbstractUser user : players) {
+
                     keepTrackForBots(players, board);
+
                     System.out.println("IT IS " + user.getName() + "'S TURN");
+                    user.showCurrentCards();
                     user.playCardTo(board);
                     keepTrackForBots(players, board);
-                    user.showCurrentCards();
-                    System.out.println("---------THIS IS BOARD--------");
-                    for (Card card : board) {
-                        System.out.print(card.getCardName() + " ");
-                    }
-                    System.out.println();
+
+
+
+                    printBoard(board);
+
                     evaluatePlayedCard(user, board);
+                    System.out.println(user.getName()+"'s score is: "+ user.getScore());
                 }
             }
 
 
 
         }
+        System.out.println("GAME IS FINISHED");
+        for(AbstractUser user: players){
+            System.out.println(user.getName()+"'s score is:"+ user.getScore());
+        }
+    }
+
+    public static void printBoard(ArrayList<Card> board){
+        System.out.println("-----------------------BOARD-----------------------");
+        for(int i = 0;i<board.size();i++){
+            System.out.print((i+1)+"."+board.get(i).getCardName()+"      ");
+        }
+
+        System.out.println();
+        System.out.println("---------------------------------------------------");
+        System.out.println();
+
     }
 
     public static void keepTrackForBots(ArrayList<AbstractUser> players, ArrayList<Card> Board){
         for(AbstractUser user:players){
             if(user instanceof ExpertBotUser expert){
+
                 expert.findTopCard(Board);
                 expert.keepTrackOfAllPlayedCards();
                 expert.calculateTotalBoardPoint(Board);
+                System.out.println("EXPERT BOTUN PLAYED CARD SAYISI:"+((ExpertBotUser) user).getAllPlayedCards().size());
 
             }else if(user instanceof RegularBotUser regular){
+                System.out.println("REGULAR BOT TESPİT EDİLDİ");
                 regular.findTopCard(Board);
                 regular.calculateTotalBoardPoint(Board);
             }

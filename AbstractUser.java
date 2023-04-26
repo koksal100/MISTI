@@ -59,16 +59,23 @@ public abstract class AbstractUser implements User {
 	}
 
 	public final void showCurrentCards() {
+		System.out.print(getName()+"' s cards: ");
 		for (int i = 0; i < this.getCurrentCards().size(); i++) {
 			System.out.print((i + 1) + " - " + this.getCurrentCards().get(i).getCardName() + "/ ");
 		}
 		System.out.println();
+		System.out.println();
+		System.out.println();
+
 	}
 
 	public final void showCollectedCards() {
+		System.out.print(getName()+"' s collected cards: ");
 		for (int i = 0; i < this.getcollectedCards().size(); i++) {
 			System.out.print((i + 1) + " " + this.getcollectedCards().get(i).getCardName() + "  ");
 		}
+		System.out.println();
+		System.out.println();
 		System.out.println();
 	}
 	public void calculateCollectedCardsScore(){
