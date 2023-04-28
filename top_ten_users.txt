@@ -1,3 +1,4 @@
+ExpertBot 2, 42, ExpertBotUser
 RegularBot 3, 35, RegularBotUser
 RegularBot 1, 29, RegularBotUser
 ExpertBot 2, 28, ExpertBotUser
@@ -7,4 +8,3 @@ ExpertBot 1, 24, ExpertBotUser
 messi, 24, HumanUser
 RegularBot 1, 21, RegularBotUser
 RegularBot 1, 20, RegularBotUser
-ExpertBot 1, 19, ExpertBotUser

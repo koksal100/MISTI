@@ -94,7 +94,7 @@ public abstract class AbstractUser implements User {
 
     public final void raceWithOthers(ArrayList<AbstractUser> topTenUsers) {
         int size = topTenUsers.size();
-        System.out.println("top ten user size is " + size);
+
         boolean isAssigned = false;
 
         for (int i = 0; i < size; i++) {
