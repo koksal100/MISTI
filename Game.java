@@ -1,5 +1,7 @@
 package SE116PROJECT;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,19 +15,24 @@ public class Game {
         Scanner scan = new Scanner(System.in);
         //Preparing cards for game
         Deck deck = new Deck();
+        ArrayList<AbstractUser> topTenUsers = new ArrayList<>();
+        takeTopTenUsersFileTo(topTenUsers);
+
+
         deck.shuffleDeck();
         deck.cutDeck();
 
         ArrayList<Card> gameDeck = deck.getCards();
+
 
         //gameDeck.printDeck(); // sorted CONTROL
 
 
         //gameDeck.printDeck();// last deck CONTROL
 
-		/*for(Card card:gameDeck.getCards()) { // value CONTROL
-			System.out.println(card.getCardName()+" value: "+card.getValue());
-		}*/
+        /*for(Card card:gameDeck.getCards()) { // value CONTROL
+            System.out.println(card.getCardName()+" value: "+card.getValue());
+        }*/
 
         //Creating Board
         ArrayList<Card> board = new ArrayList<>();
@@ -43,16 +50,16 @@ public class Game {
                 dealHands(false, players, board, gameDeck);
 
             }
-            for(AbstractUser user: players ){
-                if(user instanceof ExpertBotUser expert &&i ==0){
-                    for(Card card:board) {
+            for (AbstractUser user : players) {
+                if (user instanceof ExpertBotUser expert && i == 0) {
+                    for (Card card : board) {
                         expert.getAllPlayedCards().add(card);
                     }
 
                 }
             }
 
-            for(int a = 0 ; a<4;a++) {
+            for (int a = 0; a < 4; a++) {
                 for (AbstractUser user : players) {
                     System.out.println(user.getName() + "'s hand:");
                     user.showCurrentCards();
@@ -68,27 +75,33 @@ public class Game {
                     keepTrackForBots(players, board);
 
 
-
                     printBoard(board);
 
                     evaluatePlayedCard(user, board);
-                    System.out.println(user.getName()+"'s score is: "+ user.getScore());
+                    System.out.println(user.getName() + "'s score is: " + user.getScore());
                 }
             }
 
 
-
         }
         System.out.println("GAME IS FINISHED");
-        for(AbstractUser user: players){
-            System.out.println(user.getName()+"'s score is:"+ user.getScore());
+        for (AbstractUser user : players) {
+            System.out.println(user.getName() + "'s score is:" + user.getScore());
         }
+
+
+        for (AbstractUser user : players) {
+            user.raceWithOthers(topTenUsers);
+        }
+
+
+        writeToFile(topTenUsers);
     }
 
-    public static void printBoard(ArrayList<Card> board){
+    public static void printBoard(ArrayList<Card> board) {
         System.out.println("-----------------------BOARD-----------------------");
-        for(int i = 0;i<board.size();i++){
-            System.out.print((i+1)+"."+board.get(i).getCardName()+"      ");
+        for (int i = 0; i < board.size(); i++) {
+            System.out.print((i + 1) + "." + board.get(i).getCardName() + "      ");
         }
 
         System.out.println();
@@ -97,16 +110,16 @@ public class Game {
 
     }
 
-    public static void keepTrackForBots(ArrayList<AbstractUser> players, ArrayList<Card> Board){
-        for(AbstractUser user:players){
-            if(user instanceof ExpertBotUser expert){
+    public static void keepTrackForBots(ArrayList<AbstractUser> players, ArrayList<Card> Board) {
+        for (AbstractUser user : players) {
+            if (user instanceof ExpertBotUser expert) {
 
                 expert.findTopCard(Board);
                 expert.keepTrackOfAllPlayedCards();
                 expert.calculateTotalBoardPoint(Board);
-                System.out.println("EXPERT BOTUN PLAYED CARD SAYISI:"+((ExpertBotUser) user).getAllPlayedCards().size());
+                System.out.println("EXPERT BOTUN PLAYED CARD SAYISI:" + ((ExpertBotUser) user).getAllPlayedCards().size());
 
-            }else if(user instanceof RegularBotUser regular){
+            } else if (user instanceof RegularBotUser regular) {
                 System.out.println("REGULAR BOT TESPİT EDİLDİ");
                 regular.findTopCard(Board);
                 regular.calculateTotalBoardPoint(Board);
@@ -130,10 +143,12 @@ public class Game {
     public static int determinePlayerNumber() {
         Scanner scan = new Scanner(System.in);
         int intOption = 0;
-        System.out.println("Please select an option: 1-Two Players 2-Three Players 3-Four Players");
-        String option = scan.next();
+
         Boolean isOptionAssigned = false;
+
         while (!isOptionAssigned) {
+            System.out.println("Please select an option: 1-Two Players 2-Three Players 3-Four Players");
+            String option = scan.next();
             try {
                 intOption = Integer.parseInt(option);
             } catch (Exception e) {
@@ -270,31 +285,32 @@ public class Game {
     public static void takeTopTenUsersFileTo(ArrayList<AbstractUser> topTenUsers) {
         String[] informations = new String[3];
         Scanner reader = null;
+        AbstractUser tempUser = new NoviceBotUser();
 
         try {
             reader = new Scanner(Paths.get("top_ten_users.txt"));
             while (reader.hasNextLine()) {
-                AbstractUser temp_user = null;
                 informations = reader.nextLine().split(",");
 
-                switch (informations[2]) {
+                switch (informations[2].trim()) {
                     case "RegularBotUser":
-                        temp_user = new RegularBotUser(informations[0].trim());
+                        tempUser = new RegularBotUser(informations[0].trim());
                         break;
                     case "NoviceBotUser":
-                        temp_user = new NoviceBotUser(informations[0].trim());
+                        tempUser = new NoviceBotUser(informations[0].trim());
                         break;
                     case "ExpertBotUser":
-                        temp_user = new ExpertBotUser(informations[0].trim());
+                        tempUser = new ExpertBotUser(informations[0].trim());
                         break;
                     case "HumanUser":
-                        temp_user = new HumanUser(informations[0].trim());
+                        tempUser = new HumanUser(informations[0].trim());
                         break;
                 }
-                temp_user.setScore(Integer.parseInt(informations[1].trim()));
-                temp_user.raceWithOthers(topTenUsers);
-
+                tempUser.setScore(Integer.parseInt(informations[1].trim()));
+                topTenUsers.add(tempUser);
+                System.out.println("top ten user txt sine " + tempUser.getName() + " adlı user eklendi.");
             }
+
         } catch (Exception e) {
 
         } finally {
@@ -308,16 +324,27 @@ public class Game {
     public static void writeToFile(ArrayList<AbstractUser> topTenUsers) {
         Scanner reader = null;
         Formatter f = null;
+        Scanner scan = new Scanner(System.in);
         int top_10_users_index = 0;
+        String name;
+        String score;
+        String type = "";
+
 
         try (FileWriter fw = new FileWriter("top_ten_users.txt")) {
 
 
             for (int i = 0; i < topTenUsers.size(); i++) {
-
                 reader = new Scanner(Paths.get("top_ten_users.txt"));
-                fw.write(topTenUsers.get(i).getName() + ", "
-                        + Integer.toString(topTenUsers.get(i).getScore()) + ", " + topTenUsers.get(i).getClass().getName());
+                name = topTenUsers.get(i).getName();
+                score = Integer.toString(topTenUsers.get(i).getScore());
+
+                if (topTenUsers.get(i) instanceof ExpertBotUser) type = "ExpertBotUser";
+                else if (topTenUsers.get(i) instanceof NoviceBotUser) type = "ExpertBotUser";
+                else if (topTenUsers.get(i) instanceof RegularBotUser) type = "ExpertBotUser";
+                else if (topTenUsers.get(i) instanceof HumanUser) type = "ExpertBotUser";
+
+                fw.write(name + ", " + score + ", " + type);
                 fw.write("\n");
             }
         } catch (Exception e) {
