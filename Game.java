@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
+    public static AbstractUser lastWinner;
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         //Preparing cards for game
@@ -84,6 +86,8 @@ public class Game {
 
 
         }
+        collectLastCards(lastWinner, board);
+        printBoard(board);
         System.out.println("GAME IS FINISHED");
         for (AbstractUser user : players) {
             System.out.println(user.getName() + "'s score is:" + user.getScore());
@@ -205,7 +209,7 @@ public class Game {
                 if (intOption < 1 || intOption > 4) {
                     System.out.println("Please give a number between 1 and 4!");
                     continue;
-                } else if (numberOfHumanPlayer == 1) {
+                } else if (numberOfHumanPlayer == 1 && intOption == 4) {
                     System.out.println("There will be maximum one human player.");
                     continue;
                 } else {
@@ -308,7 +312,6 @@ public class Game {
                 }
                 tempUser.setScore(Integer.parseInt(informations[1].trim()));
                 topTenUsers.add(tempUser);
-                System.out.println("top ten user txt sine " + tempUser.getName() + " adlı user eklendi.");
             }
 
         } catch (Exception e) {
@@ -380,10 +383,16 @@ public class Game {
             Card lastPlayedCard = boardCards.get(boardCards.size() - 1);
             Card oldLastPlayedCard = boardCards.get(boardCards.size() - 2);
             if (lastPlayedCard.getCardface().equals("Vale") || lastPlayedCard.getCardface().equals(oldLastPlayedCard.getCardface())) {
+                lastWinner = user;
                 AssignScoreTo(user, boardCards);
                 user.collectCards(boardCards);
             }
         }
+    }
+
+    public static void collectLastCards(AbstractUser user, ArrayList<Card> board) {
+        AssignScoreTo(user, board);
+        user.collectCards(board);
     }
 
 
