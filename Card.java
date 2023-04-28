@@ -1,5 +1,7 @@
 package SE116PROJECT;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
@@ -9,10 +11,11 @@ public class Card {
 	private String cardface;
 	private String cardName;
 
+	private static String fileAdress=getFileName();
 	Card(String suit, String cardface) {
 		setCardface(cardface);
 		setSuit(suit);
-		setValue();
+		setValue(fileAdress);
 
 	}
 	Card() {
@@ -45,13 +48,14 @@ public class Card {
 		return value;
 	}
 
-	public void setValue() {
+	public void setValue(String fileAdress) {
 		Scanner reader = null;
 		String[] informations = new String[2];
 		boolean isAssigned = false;
 		int i = 0;
 		try {
-			reader = new Scanner(Paths.get("points.txt"));
+
+			reader = new Scanner(fileAdress);
 			while (reader.hasNextLine()) {
 				informations = reader.nextLine().split(" ");
 				if ((this.getSuit() + this.getCardface()).equals(informations[0])
@@ -75,5 +79,27 @@ public class Card {
 			}
 		}
 
+	}
+
+	public static String getFileName(){
+		Scanner scan = new Scanner(System.in);
+		Path path;
+		String fileName="";
+		boolean isAssigned=false;
+		int i =0;
+		while(!isAssigned){
+			System.out.println("PLEASE GIVE THE ADDRESS OF THE FILE:");
+			fileName= scan.nextLine();
+			path = Paths.get(fileName);
+			if(Files.exists(path)){
+				isAssigned=true;
+				System.out.println("FILE IS FOUND!");
+				break;
+			}else{
+				System.out.println("FILE DOES NOT EXIST! TRY IT AGAIN.");
+			}
+		}
+
+		return fileName;
 	}
 }
