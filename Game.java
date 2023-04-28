@@ -340,9 +340,9 @@ public class Game {
                 score = Integer.toString(topTenUsers.get(i).getScore());
 
                 if (topTenUsers.get(i) instanceof ExpertBotUser) type = "ExpertBotUser";
-                else if (topTenUsers.get(i) instanceof NoviceBotUser) type = "ExpertBotUser";
-                else if (topTenUsers.get(i) instanceof RegularBotUser) type = "ExpertBotUser";
-                else if (topTenUsers.get(i) instanceof HumanUser) type = "ExpertBotUser";
+                else if (topTenUsers.get(i) instanceof NoviceBotUser) type = "NoviceBotUser";
+                else if (topTenUsers.get(i) instanceof RegularBotUser) type = "RegularBotUser";
+                else if (topTenUsers.get(i) instanceof HumanUser) type = "HumanUser";
 
                 fw.write(name + ", " + score + ", " + type);
                 fw.write("\n");
