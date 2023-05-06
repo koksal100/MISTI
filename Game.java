@@ -87,6 +87,7 @@ public class Game {
 
         }
         collectLastCards(lastWinner, board);
+        whoHasMostCards(players);
         printBoard(board);
         System.out.println("GAME IS FINISHED");
         for (AbstractUser user : players) {
@@ -101,7 +102,17 @@ public class Game {
 
         writeToFile(topTenUsers);
     }
-
+    public static void whoHasMostCards(ArrayList<AbstractUser> users){
+        int userIndex = 0;
+        int mostSize=0;
+        for(int i = 0;i<users.size();i++){
+            if(users.get(i).getcollectedCards().size()>mostSize){
+                userIndex=i;
+                mostSize=users.get(i).getcollectedCards().size();
+            }
+        }
+        users.get(userIndex).setScore(users.get(userIndex).getScore()+5);
+    }
     public static void printBoard(ArrayList<Card> board) {
         System.out.println("-----------------------BOARD-----------------------");
         for (int i = 0; i < board.size(); i++) {
