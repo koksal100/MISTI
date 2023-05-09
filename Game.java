@@ -27,7 +27,6 @@ public class Game {
 
         ArrayList<Card> gameDeck = deck.getCards();
 
-
         //gameDeck.printDeck(); // sorted CONTROL
 
 
