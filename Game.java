@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
+    public static Scanner sc = new Scanner(System.in);
     public static AbstractUser lastWinner;
 
     public static void main(String[] args) {
@@ -19,7 +20,7 @@ public class Game {
         Deck deck = new Deck();
         ArrayList<AbstractUser> topTenUsers = new ArrayList<>();
         takeTopTenUsersFileTo(topTenUsers);
-
+        boolean isVerbose = verboseController();
 
         deck.shuffleDeck();
         deck.cutDeck();
@@ -43,46 +44,76 @@ public class Game {
         ArrayList<AbstractUser> players = settingPlayersOptions(numberOfPlayers);
         int numberOfRounds = determineNumberOfRounds(numberOfPlayers);
         Boolean isFirstRound = true;
-
+        int tableTurn;
         //Game
         for (int i = 0; i < numberOfRounds; i++) {
+            tableTurn=0;
             if (i == 0) {
                 dealHands(true, players, board, gameDeck);
+                for (AbstractUser user : players) {
+                    if (user instanceof ExpertBotUser expert ) {
+                        for (Card card : board) {
+                            expert.getAllPlayedCards().add(card);
+                        }
+
+                    }
+                }
             } else {
                 dealHands(false, players, board, gameDeck);
 
             }
-            for (AbstractUser user : players) {
-                if (user instanceof ExpertBotUser expert && i == 0) {
-                    for (Card card : board) {
-                        expert.getAllPlayedCards().add(card);
+            printBoard(board);
+            if(isVerbose){
+                System.out.println("Hand "+(i+1));
+                for(int userIndex = 0;userIndex<players.size();userIndex++){
+                    players.get(userIndex).showCurrentCards();;
+                    System.out.println("SCORE:" + players.get(userIndex).getScore());
+                }
+                for (int a = 0; a < 4; a++) {
+
+
+                    System.out.print((++tableTurn)+"  ");
+                    for(int userIndex = 0;userIndex<players.size();userIndex++){
+                        keepTrackForBots(players, board);
+                        players.get(userIndex).playCardTo(board);
+                        System.out.print(board.get(board.size()-1).getCardName());
+                        keepTrackForBots(players, board);
+                        evaluatePlayedCard(players.get(userIndex), board);
+
                     }
+                    System.out.println();
+
+
 
                 }
-            }
-
-            for (int a = 0; a < 4; a++) {
-                for (AbstractUser user : players) {
-                    System.out.println(user.getName() + "'s hand:");
-                    user.showCurrentCards();
-                }
-                printBoard(board);
-                for (AbstractUser user : players) {
-
-                    keepTrackForBots(players, board);
-
-                    System.out.println("IT IS " + user.getName() + "'S TURN");
-                    user.showCurrentCards();
-                    user.playCardTo(board);
-                    keepTrackForBots(players, board);
 
 
+            }else{
+                for (int a = 0; a < 4; a++) {
+                    for (AbstractUser user : players) {
+                        System.out.println(user.getName() + "'s hand:");
+                        user.showCurrentCards();
+                    }
                     printBoard(board);
+                    for (AbstractUser user : players) {
 
-                    evaluatePlayedCard(user, board);
-                    System.out.println(user.getName() + "'s score is: " + user.getScore());
+                        keepTrackForBots(players, board);
+
+                        System.out.println("IT IS " + user.getName() + "'S TURN");
+                        user.showCurrentCards();
+                        user.playCardTo(board);
+                        keepTrackForBots(players, board);
+
+
+                        printBoard(board);
+
+                        evaluatePlayedCard(user, board);
+                        System.out.println(user.getName() + "'s score is: " + user.getScore());
+                    }
                 }
             }
+
+
 
 
         }
@@ -103,6 +134,37 @@ public class Game {
         writeToFile(topTenUsers);
     }
 
+    public static boolean verboseController(){
+        boolean isVerbose = false;
+        System.out.println("Do you want to play in verbose mode?\nPlease press 1 for yes.\nPlease press 2 for no.");
+
+        int choice=0;
+
+        while(true) {
+            String decision=sc.nextLine();
+            try {
+                choice = Integer.parseInt(decision);
+            } catch (Exception e) {
+                System.out.println("PLEASE GIVE AN INTEGER");
+                continue;
+            }
+            if (choice == 1) {
+                isVerbose = true;
+                break;
+            }
+            else if (choice==2) {
+                isVerbose = false;
+                break;
+            }
+
+            else{
+                System.out.println("PLEASE ENTER 1 OR 2!");
+                continue;
+            }
+        }
+
+        return isVerbose;
+    }
     public static void whoHasMostCards(ArrayList<AbstractUser> users) {
         int userIndex = 0;
         int mostSize = 0;
@@ -141,7 +203,6 @@ public class Game {
                 expert.findTopCard(Board);
                 expert.keepTrackOfAllPlayedCards();
                 expert.calculateTotalBoardPoint(Board);
-                System.out.println("EXPERT BOTUN PLAYED CARD SAYISI:" + ((ExpertBotUser) user).getAllPlayedCards().size());
 
             } else if (user instanceof RegularBotUser regular) {
                 regular.findTopCard(Board);
@@ -402,6 +463,7 @@ public class Game {
             Card lastPlayedCard = boardCards.get(boardCards.size() - 1);
             Card oldLastPlayedCard = boardCards.get(boardCards.size() - 2);
             if (lastPlayedCard.getCardface().equals("J") || lastPlayedCard.getCardface().equals(oldLastPlayedCard.getCardface())) {
+                System.out.print("!");
                 lastWinner = user;
                 AssignScoreTo(user, boardCards);
                 user.collectCards(boardCards);

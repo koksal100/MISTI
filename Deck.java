@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.Random;
 public class Deck {
     private ArrayList<Card> cards;
 
@@ -50,9 +50,9 @@ ArrayList<Card> cards = new ArrayList<Card>(52);
         Collections.shuffle(cards);
     }
     public void cutDeck(){
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Please enter where do you want to cut the deck");
-        int cut = scan.nextInt();
+
+        Random rnd = new Random();
+        int cut = rnd.nextInt(52);
         List<Card> firstHalf = cards.subList(0,cut);
         List<Card> secondHalf = cards.subList(cut,cards.size());
         ArrayList<Card> newCards = new ArrayList<Card>();

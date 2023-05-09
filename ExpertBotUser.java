@@ -40,14 +40,14 @@ public class ExpertBotUser extends AbstractUser {
             cardFaces.add(getCurrentCards().get(i).getCardface());
         }
 
-        if (getCurrentCards().contains("VALE")) {
+        if (getCurrentCards().contains("J")) {
             isValeFound = true;
-            valeIndex = getCurrentCards().indexOf("VALE");
+            valeIndex = getCurrentCards().indexOf("J");
         }
 
         if (topCard == null) {
             for (int i = 0; i < getCurrentCards().size(); i++) {
-                if (!getCurrentCards().get(i).equals("VALE")) {
+                if (!getCurrentCards().get(i).equals("J")) {
                     otherOptions.add(getCurrentCards().get(i));
                 }
             }
@@ -82,7 +82,7 @@ public class ExpertBotUser extends AbstractUser {
                 boolean isThereAnotherOption = false;
                 //checks for a card except vale and top card
                 for (Card cards : getCurrentCards()) {
-                    if (!cards.equals("VALE") && !cards.equals(topCard.getCardface())) {
+                    if (!cards.equals("J") && !cards.equals(topCard.getCardface())) {
                         isThereAnotherOption = true;
                         break;
                     }
@@ -90,7 +90,7 @@ public class ExpertBotUser extends AbstractUser {
                 if (isThereAnotherOption) {
                     //list cards except top card and vale
                     for (int i = 0; i < getCurrentCards().size(); i++) {
-                        if (!getCurrentCards().get(i).equals("VALE") && !getCurrentCards().get(i).equals(topCard.getCardface())) {
+                        if (!getCurrentCards().get(i).equals("J") && !getCurrentCards().get(i).equals(topCard.getCardface())) {
                             otherOptions.add(getCurrentCards().get(i));
                         }
                     }
@@ -145,7 +145,7 @@ public class ExpertBotUser extends AbstractUser {
 
     public void keepTrackOfAllPlayedCards() {
         if (topCard != null && !allPlayedCards.contains(topCard)) {
-            System.out.println(this.topCard.getCardName() + " eklendi.");
+
             allPlayedCards.add(this.topCard);
         }
     }
