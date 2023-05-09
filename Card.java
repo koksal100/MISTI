@@ -26,7 +26,7 @@ public class Card {
     }
 
     public String getCardName() {
-        return suit + " " + cardface;
+        return suit + cardface+"  ";
     }
 
     public String getSuit() {
