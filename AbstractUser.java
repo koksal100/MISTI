@@ -12,6 +12,7 @@ public abstract class AbstractUser implements User {
     // and one parameter constructor.
 
     private String name;
+    private int tuna;
     private int score;
     private ArrayList<Card> currentCards = new ArrayList<>();
     private ArrayList<Card> collectedCards = new ArrayList<>();
