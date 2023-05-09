@@ -37,11 +37,11 @@ public class RegularBotUser extends AbstractUser {
 
         if (cardFaces.contains("VALE")) {
             isValeFound = true;
-            valeIndex = getCurrentCards().indexOf("VALE");
+            valeIndex = getCurrentCards().indexOf("J");
         }
         if(topCard==null){
             for (int i = 0; i < getCurrentCards().size(); i++) {
-                if (!getCurrentCards().get(i).equals("VALE") ) {
+                if (!getCurrentCards().get(i).equals("J") ) {
                     otherOptions.add(getCurrentCards().get(i));
                 }
             }
@@ -81,9 +81,9 @@ public class RegularBotUser extends AbstractUser {
 
             if (!isValeUsefull && !isMatchedCardUsefull) {
                 boolean isThereAnotherOption = false;
-                    //checks for a card except vale and top card
+                //checks for a card except vale and top card
                 for (Card cards : getCurrentCards()) {
-                    if (!cards.getCardface().equals("VALE") && !cards.getCardface().equals(topCard.getCardface())) {
+                    if (!cards.getCardface().equals("J") && !cards.getCardface().equals(topCard.getCardface())) {
                         isThereAnotherOption = true;
                         break;
                     }
@@ -94,7 +94,7 @@ public class RegularBotUser extends AbstractUser {
 
 
                     for (int i = 0; i < getCurrentCards().size(); i++) {
-                        if (!getCurrentCards().get(i).getCardface().equals("VALE") && !getCurrentCards().get(i).getCardface().equals(topCard.getCardface())) {
+                        if (!getCurrentCards().get(i).getCardface().equals("J") && !getCurrentCards().get(i).getCardface().equals(topCard.getCardface())) {
                             otherOptions.add(getCurrentCards().get(i));
                         }
                     }

@@ -63,9 +63,8 @@ public abstract class AbstractUser implements User {
         for (int i = 0; i < this.getCurrentCards().size(); i++) {
             System.out.print( "  ▊" + this.getCurrentCards().get(i).getCardName()+ "  ");
         }
-        System.out.println();
-        System.out.println();
-        System.out.println();
+
+
 
     }
 
@@ -117,7 +116,4 @@ public abstract class AbstractUser implements User {
     }
 
 }
-
-
-
 

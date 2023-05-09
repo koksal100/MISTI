@@ -5,6 +5,6 @@ ExpertBot 1, 45, ExpertBotUser
 RegularBot 1, 44, RegularBotUser
 ExpertBot 2, 42, ExpertBotUser
 ExpertBot 1, 38, ExpertBotUser
+ExpertBot 1, 37, ExpertBotUser
+RegularBot 1, 36, RegularBotUser
 RegularBot 3, 35, RegularBotUser
-RegularBot 1, 33, RegularBotUser
-RegularBot 1, 29, RegularBotUser
