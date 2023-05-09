@@ -102,26 +102,35 @@ public class Game {
 
         writeToFile(topTenUsers);
     }
-    public static void whoHasMostCards(ArrayList<AbstractUser> users){
+
+    public static void whoHasMostCards(ArrayList<AbstractUser> users) {
         int userIndex = 0;
-        int mostSize=0;
-        for(int i = 0;i<users.size();i++){
-            if(users.get(i).getcollectedCards().size()>mostSize){
-                userIndex=i;
-                mostSize=users.get(i).getcollectedCards().size();
+        int mostSize = 0;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getcollectedCards().size() > mostSize) {
+                userIndex = i;
+                mostSize = users.get(i).getcollectedCards().size();
             }
         }
-        users.get(userIndex).setScore(users.get(userIndex).getScore()+5);
+        users.get(userIndex).setScore(users.get(userIndex).getScore() + 5);
     }
-    public static void printBoard(ArrayList<Card> board) {
-        System.out.println("-----------------------BOARD-----------------------");
-        for (int i = 0; i < board.size(); i++) {
-            System.out.print((i + 1) + "." + board.get(i).getCardName() + "      ");
-        }
 
+    public static void printBoard(ArrayList<Card> board) {
+        System.out.println("❮ BOARD ❯");
+
+        for (int i = board.size() - 1; i >= 0; i--) {
+
+            if (i == board.size() - 1) {
+                System.out.println("  ▊" + board.get(board.size() - 1).getCardName() + "    ");
+                System.out.println();
+            } else {
+                System.out.print("  ▊" + board.get(i).getCardName() + "    ");
+            }
+        }
         System.out.println();
-        System.out.println("---------------------------------------------------");
-        System.out.println();
+        System.out.println("════════════════════════════════════════");
+        System.out.println("");
+
 
     }
 
@@ -135,7 +144,6 @@ public class Game {
                 System.out.println("EXPERT BOTUN PLAYED CARD SAYISI:" + ((ExpertBotUser) user).getAllPlayedCards().size());
 
             } else if (user instanceof RegularBotUser regular) {
-                System.out.println("REGULAR BOT TESPİT EDİLDİ");
                 regular.findTopCard(Board);
                 regular.calculateTotalBoardPoint(Board);
             }
@@ -393,7 +401,7 @@ public class Game {
         if (boardCards.size() > 1) {
             Card lastPlayedCard = boardCards.get(boardCards.size() - 1);
             Card oldLastPlayedCard = boardCards.get(boardCards.size() - 2);
-            if (lastPlayedCard.getCardface().equals("Vale") || lastPlayedCard.getCardface().equals(oldLastPlayedCard.getCardface())) {
+            if (lastPlayedCard.getCardface().equals("J") || lastPlayedCard.getCardface().equals(oldLastPlayedCard.getCardface())) {
                 lastWinner = user;
                 AssignScoreTo(user, boardCards);
                 user.collectCards(boardCards);

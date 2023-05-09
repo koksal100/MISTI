@@ -27,8 +27,8 @@ System.out.println(cards.get(i).getCardName());
     private ArrayList<Card> InitializeDeck(){
 ArrayList<Card> cards = new ArrayList<Card>(52);
 
-        String[] suits ={"Kupa", "Karo", "Sinek", "Maça"};
-        String[] ranks = {"As","2", "3", "4", "5", "6", "7", "8", "9", "10", "Vale", "Kız", "Papaz"};
+        String[] suits ={"♠", "♥", "♣", "♦"};
+        String[] ranks = {"A","2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
        for(int i=0;i<suits.length;i++){
 
