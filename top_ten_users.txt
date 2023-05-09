@@ -1,0 +1,3 @@
+ExpertBot 1, 230, ExpertBotUser
+nor, 65, HumanUser
+RegularBot 1, 0, RegularBotUser
