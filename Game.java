@@ -38,19 +38,31 @@ public class Game {
 
         //Creating Board
         ArrayList<Card> board = new ArrayList<>();
+
+
         //Creating players and setting game options
         int numberOfPlayers = determinePlayerNumber();
         ArrayList<AbstractUser> players = settingPlayersOptions(numberOfPlayers);
         int numberOfRounds = determineNumberOfRounds(numberOfPlayers);
         Boolean isFirstRound = true;
         int tableTurn;
+        boolean isThereHumanUser = false;
+
+
+        for (AbstractUser user : players) {
+            if (user instanceof HumanUser) {
+                isThereHumanUser = true;
+            }
+        }
+
+
         //Game
         for (int i = 0; i < numberOfRounds; i++) {
-            tableTurn=0;
+            tableTurn = 0;
             if (i == 0) {
                 dealHands(true, players, board, gameDeck);
                 for (AbstractUser user : players) {
-                    if (user instanceof ExpertBotUser expert ) {
+                    if (user instanceof ExpertBotUser expert) {
                         for (Card card : board) {
                             expert.getAllPlayedCards().add(card);
                         }
@@ -61,58 +73,82 @@ public class Game {
                 dealHands(false, players, board, gameDeck);
 
             }
-            printBoard(board);
-            if(isVerbose){
-                System.out.println("Hand "+(i+1));
-                for(int userIndex = 0;userIndex<players.size();userIndex++){
-                    players.get(userIndex).showCurrentCards();;
+
+            if (i==0){
+                printBoard(board);
+            }
+            if (isVerbose) {
+                System.out.println("Hand " + (i + 1));
+                for (int userIndex = 0; userIndex < players.size(); userIndex++) {
+                    players.get(userIndex).showCurrentCards();
+                    ;
                     System.out.println("SCORE:" + players.get(userIndex).getScore());
                 }
                 for (int a = 0; a < 4; a++) {
 
 
-                    System.out.print((++tableTurn)+"  ");
-                    for(int userIndex = 0;userIndex<players.size();userIndex++){
+                    System.out.print((++tableTurn) + "  ");
+                    for (int userIndex = 0; userIndex < players.size(); userIndex++) {
                         keepTrackForBots(players, board);
                         players.get(userIndex).playCardTo(board);
-                        System.out.print(board.get(board.size()-1).getCardName());
+                        System.out.print(board.get(board.size() - 1).getCardName());
                         keepTrackForBots(players, board);
-                        evaluatePlayedCard(players.get(userIndex), board);
+                        evaluatePlayedCard(players.get(userIndex), board,isVerbose);
 
                     }
                     System.out.println();
 
 
-
                 }
 
 
-            }else{
-                for (int a = 0; a < 4; a++) {
-                    for (AbstractUser user : players) {
-                        System.out.println(user.getName() + "'s hand:");
-                        user.showCurrentCards();
+            } else { //verbose değil ise ,buraya human player olduğu durumda sadece boardun yazdırılması eklenecek
+                if (isThereHumanUser) {
+                    for (int a = 0; a < 4; a++) {
+
+
+                        for (AbstractUser user : players) {
+
+
+
+                            keepTrackForBots(players, board);
+
+                            System.out.println("IT IS " + user.getName() + "'S TURN");
+                            user.playCardTo(board);
+                            System.out.println(user.getName()+"has played " + board.get(board.size()-1).getCardName());
+                            keepTrackForBots(players, board);
+                            evaluatePlayedCard(user, board,isVerbose);
+                            keepTrackForBots(players, board);
+                            System.out.println(user.getName() + "'s score is: " + user.getScore());
+                        }
+
                     }
-                    printBoard(board);
-                    for (AbstractUser user : players) {
 
-                        keepTrackForBots(players, board);
-
-                        System.out.println("IT IS " + user.getName() + "'S TURN");
-                        user.showCurrentCards();
-                        user.playCardTo(board);
-                        keepTrackForBots(players, board);
-
-
+                } else {
+                    for (int a = 0; a < 4; a++) {
+                        for (AbstractUser user : players) {
+                            System.out.println(user.getName() + "'s hand:");
+                            user.showCurrentCards();
+                        }
                         printBoard(board);
+                        for (AbstractUser user : players) {
 
-                        evaluatePlayedCard(user, board);
-                        System.out.println(user.getName() + "'s score is: " + user.getScore());
+                            keepTrackForBots(players, board);
+
+                            System.out.println("IT IS " + user.getName() + "'S TURN");
+                            user.showCurrentCards();
+                            user.playCardTo(board);
+                            keepTrackForBots(players, board);
+
+
+                            printBoard(board);
+
+                            evaluatePlayedCard(user, board,isVerbose);
+                            System.out.println(user.getName() + "'s score is: " + user.getScore());
+                        }
                     }
                 }
             }
-
-
 
 
         }
@@ -133,14 +169,14 @@ public class Game {
         writeToFile(topTenUsers);
     }
 
-    public static boolean verboseController(){
+    public static boolean verboseController() {
         boolean isVerbose = false;
         System.out.println("Do you want to play in verbose mode?\nPlease press 1 for yes.\nPlease press 2 for no.");
 
-        int choice=0;
+        int choice = 0;
 
-        while(true) {
-            String decision=sc.nextLine();
+        while (true) {
+            String decision = sc.nextLine();
             try {
                 choice = Integer.parseInt(decision);
             } catch (Exception e) {
@@ -150,13 +186,10 @@ public class Game {
             if (choice == 1) {
                 isVerbose = true;
                 break;
-            }
-            else if (choice==2) {
+            } else if (choice == 2) {
                 isVerbose = false;
                 break;
-            }
-
-            else{
+            } else {
                 System.out.println("PLEASE ENTER 1 OR 2!");
                 continue;
             }
@@ -164,6 +197,7 @@ public class Game {
 
         return isVerbose;
     }
+
     public static void whoHasMostCards(ArrayList<AbstractUser> users) {
         int userIndex = 0;
         int mostSize = 0;
@@ -442,6 +476,7 @@ public class Game {
         //this function must be called before the board cards are moved to the user's collected cards.
         if (boardCards.size() == 2) {
             if (boardCards.get(0).getCardface().equals(boardCards.get(1).getCardface())) {
+                System.out.println(user.getName()+ " HAS MADE MISTI");
                 for (Card card : boardCards) {
                     user.setScore(user.getScore() + card.getValue() * 5);
                 }
@@ -457,17 +492,24 @@ public class Game {
         }
     }
 
-    public static void evaluatePlayedCard(AbstractUser user, ArrayList<Card> boardCards) {
+
+    public static void evaluatePlayedCard(AbstractUser user, ArrayList<Card> boardCards,boolean isVerbose) {
         if (boardCards.size() > 1) {
             Card lastPlayedCard = boardCards.get(boardCards.size() - 1);
             Card oldLastPlayedCard = boardCards.get(boardCards.size() - 2);
             if (lastPlayedCard.getCardface().equals("J") || lastPlayedCard.getCardface().equals(oldLastPlayedCard.getCardface())) {
-                System.out.print("!");
+                if(isVerbose) {
+                    System.out.print("!");
+                }else{
+                    System.out.println(user.getName() + " collected board ");
+                }
                 lastWinner = user;
                 AssignScoreTo(user, boardCards);
                 user.collectCards(boardCards);
+
             }
         }
+        printBoard(boardCards);
     }
 
     public static void collectLastCards(AbstractUser user, ArrayList<Card> board) {
