@@ -3,7 +3,6 @@ package SE116PROJECT;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Random;
 public class Deck {
     private ArrayList<Card> cards;
@@ -14,28 +13,18 @@ public class Deck {
         this.cards=InitializeDeck();
     }
 
-    public void printDeck(){ //CONTROL
-        for(int i=0;i<cards.size();i++){
-            System.out.println(cards.get(i).getCardName());
 
-
-        }
-
-    }
 
 
     private ArrayList<Card> InitializeDeck(){
-        ArrayList<Card> cards = new ArrayList<Card>(52);
+        ArrayList<Card> cards = new ArrayList<>(52);
 
         String[] suits ={"♠", "♥", "♣", "♦"};
         String[] ranks = {"A","2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
-        for(int i=0;i<suits.length;i++){
-
-
-            for(int a=0;a<ranks.length;a++){
-                cards.add(new Card(suits[i],ranks[a]));
-
+        for (String suit : suits) {
+            for (String rank : ranks) {
+                cards.add(new Card(suit, rank));
             }
         }
 
@@ -55,7 +44,7 @@ public class Deck {
         int cut = rnd.nextInt(52);
         List<Card> firstHalf = cards.subList(0,cut);
         List<Card> secondHalf = cards.subList(cut,cards.size());
-        ArrayList<Card> newCards = new ArrayList<Card>();
+        ArrayList<Card> newCards = new ArrayList<>();
         newCards.addAll(secondHalf);
         newCards.addAll(firstHalf);
         cards = newCards;

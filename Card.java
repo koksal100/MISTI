@@ -8,24 +8,21 @@ import java.util.Scanner;
 public class Card {
     private int value;
     private String suit;
-    private String cardface;
+    private String cardFace;
 
-    private static String fileAdress = getFileName();
+    private final static String fileAddress = getFileName();
 
     Card(String suit, String cardface) {
         setCardface(cardface);
         setSuit(suit);
-        setValue(fileAdress);
+        setValue(fileAddress);
 
     }
 
-    Card() {
 
-
-    }
 
     public String getCardName() {
-        return suit + cardface+"  ";
+        return suit + cardFace+"  ";
     }
 
     public String getSuit() {
@@ -38,11 +35,11 @@ public class Card {
     }
 
     public String getCardface() {
-        return cardface;
+        return cardFace;
     }
 
     public void setCardface(String cardface) {
-        this.cardface = cardface;
+        this.cardFace = cardface;
     }
 
     public int getValue() {
@@ -50,13 +47,13 @@ public class Card {
     }
 
     public void setValue(String fileAdress) {
-        Scanner reader = null;
-        String[] informations = new String[2];
+
+        String[] informations;
         boolean isAssigned = false;
 
-        try {
+        try (Scanner reader = new Scanner(Paths.get(fileAdress))){
 
-            reader = new Scanner(Paths.get(fileAdress));
+
             while (reader.hasNextLine()) {
                 informations = reader.nextLine().split(" ");
                 if ((this.getSuit() + this.getCardface()).equals(informations[0])
@@ -73,11 +70,7 @@ public class Card {
             }
 
         } catch (Exception e) {
-
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
+            System.out.println("SOMETHING WENT WRONG");
         }
 
     }
@@ -85,14 +78,12 @@ public class Card {
     public static String getFileName() {
         Scanner scan = new Scanner(System.in);
         Path path;
-        String fileName = "";
-        boolean isAssigned = false;
-        while (!isAssigned) {
+        String fileName ;
+        while (true) {
             System.out.println("PLEASE GIVE THE ADDRESS OF THE FILE:");
             fileName = scan.nextLine();
             path = Paths.get(fileName);
             if (Files.exists(path) && !fileName.equals("")) {
-                isAssigned = true;
                 System.out.println("FILE IS FOUND!");
                 break;
             } else {

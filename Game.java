@@ -4,12 +4,11 @@ package SE116PROJECT;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Formatter;
 import java.io.FileWriter;
 
 
 public class Game {
-    public static Scanner sc = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
     public static AbstractUser lastWinner;
 
     public static void main(String[] args) {
@@ -72,7 +71,6 @@ public class Game {
                 dealHands(false, players, board, gameDeck);
             }
             if (i==0){
-
                 printBoard(board);
             }
             if (isVerbose) {
@@ -82,8 +80,6 @@ public class Game {
                     System.out.println("SCORE:" + player.getScore());
                 }
                 for (int a = 0; a < 4; a++) {
-
-
                     System.out.print((++tableTurn) + "--Table Turn →→ ");
                     for (int userIndex = 0; userIndex < players.size(); userIndex++) {
                         keepTrackForBots(players, board);
@@ -92,25 +88,14 @@ public class Game {
                         System.out.println();
                         keepTrackForBots(players, board);
                         evaluatePlayedCard(players.get(userIndex), board,isVerbose);
-
                     }
                     System.out.println();
-
-
                 }
-
-
             } else { //verbose değil ise ,buraya human player olduğu durumda sadece boardun yazdırılması eklenecek
                 if (isThereHumanUser) {
                     for (int a = 0; a < 4; a++) {
-
-
                         for (AbstractUser user : players) {
-
-
-
                             keepTrackForBots(players, board);
-
                             System.out.println("IT IS " + user.getName() + "'S TURN");
                             user.playCardTo(board);
                             System.out.println(user.getName()+"has played " + board.get(board.size()-1).getCardName());
@@ -158,23 +143,22 @@ public class Game {
             System.out.println(user.getName() + "'s score is:" + user.getScore());
         }
 
-
         for (AbstractUser user : players) {
             user.raceWithOthers(topTenUsers);
         }
 
-
         writeToFile(topTenUsers);
+        showTopTenUsers(topTenUsers);
     }
 
     public static boolean verboseController() {
         boolean isVerbose;
         System.out.println("Do you want to play in verbose mode?\nPlease press 1 for yes.\nPlease press 2 for no.");
 
-        int choice = 0;
+        int choice;
 
         while (true) {
-            String decision = sc.nextLine();
+            String decision = scanner.nextLine();
             try {
                 choice = Integer.parseInt(decision);
             } catch (Exception e) {
@@ -189,7 +173,6 @@ public class Game {
                 break;
             } else {
                 System.out.println("PLEASE ENTER 1 OR 2!");
-                continue;
             }
         }
 
@@ -256,14 +239,13 @@ public class Game {
 
 
     public static int determinePlayerNumber() {
-        Scanner scan = new Scanner(System.in);
         int intOption = 0;
 
-        Boolean isOptionAssigned = false;
+        boolean isOptionAssigned = false;
 
         while (!isOptionAssigned) {
             System.out.println("Please select an option: 1-Two Players 2-Three Players 3-Four Players");
-            String option = scan.next();
+            String option = scanner.next();
             try {
                 intOption = Integer.parseInt(option);
             } catch (Exception e) {
@@ -297,20 +279,19 @@ public class Game {
     }
 
     public static ArrayList<AbstractUser> settingPlayersOptions(int numberOfPlayers) {
-        Scanner scan = new Scanner(System.in);
         int playerOrder = 1;
         int intOption = 0;
         int numberOfHumanPlayer = 0;
-        String option = "";
-        Boolean isSelectionCompleted = false;
-        ArrayList<AbstractUser> players = new ArrayList<AbstractUser>();
+        String option ;
+        boolean isSelectionCompleted ;
+        ArrayList<AbstractUser> players = new ArrayList<>();
 
 
         for (int i = 0; i < numberOfPlayers; i++) {
             isSelectionCompleted = false;
             while (!isSelectionCompleted) {
                 System.out.println("Please choose player" + playerOrder + "'s type \n 1:Novice bot \n 2:Regular bot \n 3:Expert bot \n 4:Human player");
-                option = scan.next();
+                option = scanner.next();
                 try {
                     intOption = Integer.parseInt(option);
                 } catch (Exception e) {
@@ -341,7 +322,7 @@ public class Game {
                     break;
                 case 4:
                     System.out.println("Please enter your name:");
-                    String name = scan.next();
+                    String name = scanner.next();
                     players.add(new HumanUser(name));
                     numberOfHumanPlayer++;
             }
@@ -387,8 +368,8 @@ public class Game {
 
     }
 
-    public void showTopTenUsers(ArrayList<AbstractUser> users) {
-
+    public static void showTopTenUsers(ArrayList<AbstractUser> users) {
+        System.out.println("HIGHEST SCORES UNTIL NOW");
         for (int i = 0; i < users.size(); i++) {
 
             System.out.println(
@@ -398,12 +379,12 @@ public class Game {
 
 
     public static void takeTopTenUsersFileTo(ArrayList<AbstractUser> topTenUsers) {
-        String[] informations = new String[3];
-        Scanner reader = null;
+        String[] informations ;
+
         AbstractUser tempUser = new NoviceBotUser();
 
-        try {
-            reader = new Scanner(Paths.get("top_ten_users.txt"));
+        try (Scanner reader = new Scanner(Paths.get("top_ten_users.txt"))){
+
             while (reader.hasNextLine()) {
                 informations = reader.nextLine().split(",");
 
@@ -426,47 +407,29 @@ public class Game {
             }
 
         } catch (Exception e) {
-
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
+            System.out.println("SOMETHING WENT WRONG!");
         }
 
     }
 
     public static void writeToFile(ArrayList<AbstractUser> topTenUsers) {
-        Scanner reader = null;
-        Formatter f = null;
-        Scanner scan = new Scanner(System.in);
-        int top_10_users_index = 0;
         String name;
         String score;
-        String type = "";
+        String type;
 
 
         try (FileWriter fw = new FileWriter("top_ten_users.txt")) {
 
 
-            for (int i = 0; i < topTenUsers.size(); i++) {
-                reader = new Scanner(Paths.get("top_ten_users.txt"));
-                name = topTenUsers.get(i).getName();
-                score = Integer.toString(topTenUsers.get(i).getScore());
-
-                if (topTenUsers.get(i) instanceof ExpertBotUser) type = "ExpertBotUser";
-                else if (topTenUsers.get(i) instanceof NoviceBotUser) type = "NoviceBotUser";
-                else if (topTenUsers.get(i) instanceof RegularBotUser) type = "RegularBotUser";
-                else if (topTenUsers.get(i) instanceof HumanUser) type = "HumanUser";
-
+            for (AbstractUser user : topTenUsers) {
+                name = user.getName();
+                score = Integer.toString(user.getScore());
+                type = user.getClass().getSimpleName();
                 fw.write(name + ", " + score + ", " + type);
                 fw.write("\n");
             }
         } catch (Exception e) {
             System.out.println("SOMETHING WENT WRONG");
-        } finally {
-            if (f != null) {
-                f.close();
-            }
         }
     }
 
