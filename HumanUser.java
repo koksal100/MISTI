@@ -11,6 +11,7 @@ public class HumanUser extends AbstractUser {
 		String decision;
 		int card_number = 0;
 		while (!valid_card_decision) {
+			System.out.println();
 			System.out.println("DEAR " + this.getName() + " WHICH CARDS DO YOU WANTS TO CHOOSE");
 
 			for (int i = 0; i < this.getCurrentCards().size(); i++) {
