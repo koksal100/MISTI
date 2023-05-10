@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class RegularBotUser extends AbstractUser {
     private static int numberOfProducedPlayer=1;
-    private static Random rd = new Random();
+    private static final Random rd = new Random();
     private Card topCard;
     private int totalBoardPoint = 0;
 
@@ -35,18 +35,17 @@ public class RegularBotUser extends AbstractUser {
             cardFaces.add(getCurrentCards().get(i).getCardface());
         }
 
-        if (cardFaces.contains("VALE")) {
+        if (cardFaces.contains("J")) {
             isValeFound = true;
-            valeIndex = getCurrentCards().indexOf("J");
+            valeIndex = cardFaces.indexOf("J");
         }
         if(topCard==null){
             for (int i = 0; i < getCurrentCards().size(); i++) {
-                if (!getCurrentCards().get(i).equals("J") ) {
+                if (!getCurrentCards().get(i).getCardface().equals("J") ) {
                     otherOptions.add(getCurrentCards().get(i));
                 }
             }
-            Card card = otherOptions.get(rd.nextInt(otherOptions.size()));
-            return card;
+            return otherOptions.get(rd.nextInt(otherOptions.size()));
         }
 
 
@@ -139,8 +138,8 @@ public class RegularBotUser extends AbstractUser {
         if (topCard == null) {
             totalBoardPoint = 0;
         } else {
-            for (int i = 0; i < board.size(); i++) {
-                this.totalBoardPoint += board.get(i).getValue();
+            for (Card card : board) {
+                this.totalBoardPoint += card.getValue();
             }
 
 

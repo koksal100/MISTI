@@ -8,7 +8,7 @@ public class ExpertBotUser extends AbstractUser {
     private Card topCard;
     private int totalBoardPoint;
     private boolean isCardEnough = false;
-    private Card nonPlayCard;
+
 
 
     ExpertBotUser(String name) {
@@ -39,19 +39,18 @@ public class ExpertBotUser extends AbstractUser {
             cardFaces.add(getCurrentCards().get(i).getCardface());
         }
 
-        if (getCurrentCards().contains("J")) {//We are checking if we have a Jack card or not and updating the boolean value.
+        if (cardFaces.contains("J")) {//We are checking if we have a Jack card or not and updating the boolean value.
             isValeFound = true;
-            valeIndex = getCurrentCards().indexOf("J");
+            valeIndex = cardFaces.indexOf("J");
         }
 
         if (topCard == null) {
             for (int i = 0; i < getCurrentCards().size(); i++) {
-                if (!getCurrentCards().get(i).equals("J")) {//We use it to avoid playing a Jack card unnecessarily when there is no card on the board.
+                if (!getCurrentCards().get(i).getCardface().equals("J")) {//We use it to avoid playing a Jack card unnecessarily when there is no card on the board.
                     otherOptions.add(getCurrentCards().get(i));
                 }
             }
-            Card card = playMostFrequentCard(otherOptions);//We are discarding the card with a higher play count from the otherOptions array.
-            return card;
+            return playMostFrequentCard(otherOptions);//We are discarding the card with a higher play count from the otherOptions array.;
         }
 
         if (cardFaces.contains(topCard.getCardface())) { //We are checking if there is a matching card or not.
@@ -73,7 +72,7 @@ public class ExpertBotUser extends AbstractUser {
             if (isMatchedCardUsefull) {
                 isCardAssigned = true;
                 return getCurrentCards().get(matchedCardIndex);
-            } else if (isValeUsefull == true) {
+            } else if (isValeUsefull) {
                 isCardAssigned = true;
                 return getCurrentCards().get(valeIndex);
             }
@@ -81,7 +80,7 @@ public class ExpertBotUser extends AbstractUser {
                 boolean isThereAnotherOption = false;
                 //checks for a card except vale and top card
                 for (Card cards : getCurrentCards()) {
-                    if (!cards.equals("J") && !cards.equals(topCard.getCardface())) {
+                    if (!cards.getCardface().equals("J") && !cards.getCardface().equals(topCard.getCardface())) {
                         isThereAnotherOption = true;
                         break;
                     }
@@ -89,7 +88,7 @@ public class ExpertBotUser extends AbstractUser {
                 if (isThereAnotherOption) {
                     //list cards except top card and vale
                     for (int i = 0; i < getCurrentCards().size(); i++) {
-                        if (!getCurrentCards().get(i).equals("J") && !getCurrentCards().get(i).equals(topCard.getCardface())) {
+                        if (!getCurrentCards().get(i).getCardface().equals("J") && !getCurrentCards().get(i).getCardface().equals(topCard.getCardface())) {
                             otherOptions.add(getCurrentCards().get(i));
                         }
                     }
@@ -113,9 +112,7 @@ public class ExpertBotUser extends AbstractUser {
                             return otherOptions.get(minValueIndex);
                         }
                     } else {
-                        Card leastPlayedCard = leastPlayedCard(otherOptions);
-
-                        return leastPlayedCard;
+                        return leastPlayedCard(otherOptions);
                         // if (isCardEnough) {
                         //   isCardAssigned = true;
 
@@ -154,8 +151,8 @@ public class ExpertBotUser extends AbstractUser {
             totalBoardPoint = 0;
         }
 
-        for (int i = 0; i < board.size(); i++) {
-            this.totalBoardPoint += board.get(i).getValue();
+        for (Card card : board) {
+            this.totalBoardPoint += card.getValue();
         }
     }
 

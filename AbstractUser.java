@@ -86,8 +86,8 @@ public abstract class AbstractUser implements User {
     }
 
     public void calculateCollectedCardsScore() {//This function iterates through the CollectedCard array using a for loop to calculate the total score.
-        for (int i = 0; i < collectedCards.size(); i++) {
-            this.score += collectedCards.get(i).getValue();
+        for (Card collectedCard : collectedCards) {
+            this.score += collectedCard.getValue();
         }
 
     }

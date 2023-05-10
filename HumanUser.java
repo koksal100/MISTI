@@ -27,7 +27,6 @@ public class HumanUser extends AbstractUser {
 			}
 			if (card_number > this.getCurrentCards().size()||card_number<1) {
 				System.out.println("PLEASE GIVE A VALID VALUE. BE CAREFUL ABOUT HOW MANY CARDS COULD YOUR HAND HAVE.");
-				continue;
 			} else {
 				valid_card_decision = true;
 			}
