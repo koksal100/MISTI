@@ -81,7 +81,7 @@ public class Game {
                     System.out.println("SCORE:" + player.getScore());
                 }
                 for (int a = 0; a < 4; a++) {
-                    System.out.print((++tableTurn)+"  ");
+                    System.out.print((++tableTurn)+". ");
                     for (int userIndex = 0; userIndex < players.size(); userIndex++) {
                         keepTrackForBots(players, board);
                         players.get(userIndex).playCardTo(board);
@@ -110,17 +110,13 @@ public class Game {
                 } else {
                     for (int a = 0; a < 4; a++) {
                         for (AbstractUser user : players) {
-                            System.out.println(user.getName() + "'s hand:");
-                            user.showCurrentCards();
-                        }
-                        printBoard(board);
-                        for (AbstractUser user : players) {
 
                             keepTrackForBots(players, board);
 
                             System.out.println("IT IS " + user.getName() + "'S TURN");
-                            user.showCurrentCards();
+
                             user.playCardTo(board);
+                            System.out.println(user.getName()+"has played " + board.get(board.size()-1).getCardName());
                             keepTrackForBots(players, board);
 
 

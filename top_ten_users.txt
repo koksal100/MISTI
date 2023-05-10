@@ -4,7 +4,7 @@ RegularBot 1, 245, RegularBotUser
 ExpertBot 1, 239, ExpertBotUser
 ExpertBot 1, 230, ExpertBotUser
 ExpertBot 1, 229, ExpertBotUser
+RegularBot 1, 215, RegularBotUser
+ExpertBot 1, 197, ExpertBotUser
 RegularBot 1, 194, RegularBotUser
-ExpertBot 1, 180, ExpertBotUser
-RegularBot 1, 175, RegularBotUser
-ExpertBot 1, 174, ExpertBotUser
+ExpertBot 1, 181, ExpertBotUser
