@@ -1,16 +1,9 @@
 package SE116PROJECT;
 import java.util.Scanner;
 public class HumanUser extends AbstractUser {
-
 	HumanUser(String name) {
 		super(name);
 	}
-
-
-
-
-
-
 	public Card findBestCardToPlay() {
 		Card card;
 		Scanner sc = new Scanner(System.in);

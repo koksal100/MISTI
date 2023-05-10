@@ -9,7 +9,6 @@ public class Card {
     private int value;
     private String suit;
     private String cardface;
-    private String cardName;
 
     private static String fileAdress = getFileName();
 
@@ -54,7 +53,7 @@ public class Card {
         Scanner reader = null;
         String[] informations = new String[2];
         boolean isAssigned = false;
-        int i = 0;
+
         try {
 
             reader = new Scanner(Paths.get(fileAdress));
@@ -88,7 +87,6 @@ public class Card {
         Path path;
         String fileName = "";
         boolean isAssigned = false;
-        int i = 0;
         while (!isAssigned) {
             System.out.println("PLEASE GIVE THE ADDRESS OF THE FILE:");
             fileName = scan.nextLine();
