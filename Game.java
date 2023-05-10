@@ -1,21 +1,19 @@
 package SE116PROJECT;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Formatter;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class Game {
     public static Scanner sc = new Scanner(System.in);
     public static AbstractUser lastWinner;
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
+
         //Preparing cards for game
         Deck deck = new Deck();
         ArrayList<AbstractUser> topTenUsers = new ArrayList<>();
@@ -44,7 +42,7 @@ public class Game {
         int numberOfPlayers = determinePlayerNumber();
         ArrayList<AbstractUser> players = settingPlayersOptions(numberOfPlayers);
         int numberOfRounds = determineNumberOfRounds(numberOfPlayers);
-        Boolean isFirstRound = true;
+
         int tableTurn;
         boolean isThereHumanUser = false;
 
@@ -52,6 +50,7 @@ public class Game {
         for (AbstractUser user : players) {
             if (user instanceof HumanUser) {
                 isThereHumanUser = true;
+                break;
             }
         }
 
@@ -71,27 +70,26 @@ public class Game {
                 }
             } else {
                 dealHands(false, players, board, gameDeck);
-
             }
-
             if (i==0){
+
                 printBoard(board);
             }
             if (isVerbose) {
                 System.out.println("Hand " + (i + 1));
-                for (int userIndex = 0; userIndex < players.size(); userIndex++) {
-                    players.get(userIndex).showCurrentCards();
-                    ;
-                    System.out.println("SCORE:" + players.get(userIndex).getScore());
+                for (AbstractUser player : players) {
+                    player.showCurrentCards();
+                    System.out.println("SCORE:" + player.getScore());
                 }
                 for (int a = 0; a < 4; a++) {
 
 
-                    System.out.print((++tableTurn) + "  ");
+                    System.out.print((++tableTurn) + "--Table Turn →→ ");
                     for (int userIndex = 0; userIndex < players.size(); userIndex++) {
                         keepTrackForBots(players, board);
                         players.get(userIndex).playCardTo(board);
-                        System.out.print(board.get(board.size() - 1).getCardName());
+                        System.out.print("Played Card"+board.get(board.size() - 1).getCardName());
+                        System.out.println();
                         keepTrackForBots(players, board);
                         evaluatePlayedCard(players.get(userIndex), board,isVerbose);
 
@@ -170,7 +168,7 @@ public class Game {
     }
 
     public static boolean verboseController() {
-        boolean isVerbose = false;
+        boolean isVerbose;
         System.out.println("Do you want to play in verbose mode?\nPlease press 1 for yes.\nPlease press 2 for no.");
 
         int choice = 0;
@@ -224,7 +222,7 @@ public class Game {
         }
         System.out.println();
         System.out.println("════════════════════════════════════════");
-        System.out.println("");
+        System.out.println();
 
 
     }
@@ -356,7 +354,7 @@ public class Game {
     public static void dealHands(Boolean isFirstRound, ArrayList<AbstractUser> players, ArrayList<Card> board, ArrayList<Card> gameDeck) {
 
 
-        if (isFirstRound == true) {
+        if (isFirstRound) {
             for (int a = 0; a < 4; a++) {//board
                 board.add(gameDeck.get(0));
                 gameDeck.remove(0);

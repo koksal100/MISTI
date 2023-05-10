@@ -8,14 +8,12 @@ public class NoviceBotUser extends AbstractUser {
 
         super(name);
     }
-
     NoviceBotUser() {
 
         this.setName("NoviceBot"+" "+numberOfProducedPlayer++);
 
     }
-
-    public Card findBestCardToPlay() {
+    public Card findBestCardToPlay() { //novice bot play randomly
         Random rand = new Random();
         int randIndex = rand.nextInt(getCurrentCards().size());
         return getCurrentCards().get(randIndex);

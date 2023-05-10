@@ -13,6 +13,4 @@ public interface User {
 	public void playCardTo(ArrayList<Card> cards);
 	public Card findBestCardToPlay( );
 	public  void raceWithOthers(ArrayList<AbstractUser> topTenUsers);
-
-	
 }

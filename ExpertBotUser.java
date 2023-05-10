@@ -24,15 +24,14 @@ public class ExpertBotUser extends AbstractUser {
         return allPlayedCards;
     }
 
-    public Card findBestCardToPlay() {//NULL HATASINA DİKKAT !!!
+    public Card findBestCardToPlay() {//The function that returns the card the computer needs to play.
         int valeIndex = 0;
         int matchedCardIndex = 0;
         boolean isCardAssigned = false;
-        boolean isMatchedCardFaceFound = false;
-        boolean isValeFound = false;
-        boolean isValeUsefull = false;
-        boolean isMatchedCardUsefull = false;
-        //ARRAYLİSTLER
+        boolean isMatchedCardFaceFound = false;////The value that checks whether we have a matching card with the card on the board.
+        boolean isValeFound = false;//Are we have jack or not
+        boolean isValeUsefull = false;//The value that becomes true if playing a Jack card yields positive points for us, and false if it does not.
+        boolean isMatchedCardUsefull = false;//If playing a matching card results in negative points for our hand, this value becomes false.
         ArrayList<Card> otherOptions = new ArrayList<>();
         ArrayList<String> cardFaces = new ArrayList<>();
 
@@ -40,33 +39,33 @@ public class ExpertBotUser extends AbstractUser {
             cardFaces.add(getCurrentCards().get(i).getCardface());
         }
 
-        if (getCurrentCards().contains("J")) {
+        if (getCurrentCards().contains("J")) {//We are checking if we have a Jack card or not and updating the boolean value.
             isValeFound = true;
             valeIndex = getCurrentCards().indexOf("J");
         }
 
         if (topCard == null) {
             for (int i = 0; i < getCurrentCards().size(); i++) {
-                if (!getCurrentCards().get(i).equals("J")) {
+                if (!getCurrentCards().get(i).equals("J")) {//We use it to avoid playing a Jack card unnecessarily when there is no card on the board.
                     otherOptions.add(getCurrentCards().get(i));
                 }
             }
-            Card card = playMostFrequentCard(otherOptions);
+            Card card = playMostFrequentCard(otherOptions);//We are discarding the card with a higher play count from the otherOptions array.
             return card;
         }
 
-        if (cardFaces.contains(topCard.getCardface())) {
+        if (cardFaces.contains(topCard.getCardface())) { //We are checking if there is a matching card or not.
             isMatchedCardFaceFound = true;
             matchedCardIndex = cardFaces.indexOf(topCard.getCardface());
         }
-        if (isMatchedCardFaceFound) {
+        if (isMatchedCardFaceFound) { //We are checking if we receive a positive score when we take the matching board cards.
             if (totalBoardPoint + getCurrentCards().get(matchedCardIndex).getValue() > 0) {
                 isMatchedCardUsefull = true;
             }
         }
 
         if (isValeFound) {
-            if (totalBoardPoint + getCurrentCards().get(valeIndex).getValue() > 0) {
+            if (totalBoardPoint + getCurrentCards().get(valeIndex).getValue() > 0) {//We are checking if we receive a positive score when we take the board cards.
                 isValeUsefull = true;
             }
         }
@@ -135,7 +134,7 @@ public class ExpertBotUser extends AbstractUser {
         return null;
     }
 
-    public void findTopCard(ArrayList<Card> board) {
+    public void findTopCard(ArrayList<Card> board) {//This function is used to find the top card on the board.
         if (board.size() > 0) {
             this.topCard = board.get(board.size() - 1);
         } else {
@@ -150,7 +149,7 @@ public class ExpertBotUser extends AbstractUser {
         }
     }
 
-    public void calculateTotalBoardPoint(ArrayList<Card> board) { //null hatası gelebilir
+    public void calculateTotalBoardPoint(ArrayList<Card> board) { //This function is used to calculate the total score of the cards in board.
         if (topCard == null) {
             totalBoardPoint = 0;
         }
@@ -160,7 +159,7 @@ public class ExpertBotUser extends AbstractUser {
         }
     }
 
-    public Card playMostFrequentCard(ArrayList<Card> otherOptions) {
+    public Card playMostFrequentCard(ArrayList<Card> otherOptions) { // The function that allows us to play the most frequently played card from previous hands if our current cards do not match or if taking the cards on the board does not benefit us.
         Card mostFrequentCard = otherOptions.get(0);
         int maxPlayedNumber = 0;
         isCardEnough = false;
@@ -184,7 +183,7 @@ public class ExpertBotUser extends AbstractUser {
     }
 
 
-    public Card leastPlayedCard(ArrayList<Card> otherOptions) {
+    public Card leastPlayedCard(ArrayList<Card> otherOptions) { //The function that allows us to play the least played card and decrease the opponent's score if the total score of the cards on the board is negative.
         Card leastPlayedCard = otherOptions.get(0);
         int leastPlayedNumber = 0;
         for (Card card : otherOptions) {

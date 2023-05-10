@@ -16,15 +16,15 @@ public class RegularBotUser extends AbstractUser {
         this.setName("RegularBot"+" "+numberOfProducedPlayer++);
     }
 
-    public Card findBestCardToPlay() { //NULL HATASINA DİKKAT !!!
+    public Card findBestCardToPlay() {
 
         int valeIndex = 0;
         int matchedCardIndex = 0;
         boolean isCardAssigned = false;
-        boolean isMatchedCardFaceFound = false;
-        boolean isValeFound = false;
-        boolean isValeUsefull = false;
-        boolean isMatchedCardUsefull = false;
+        boolean isMatchedCardFaceFound = false;//The value that checks whether we have a matching card with the card on the board.
+        boolean isValeFound = false;//Are we have jack or not
+        boolean isValeUsefull = false;//The value that becomes true if playing a Jack card yields positive points for us, and false if it does not.
+        boolean isMatchedCardUsefull = false;//If playing a matching card results in negative points for our hand, this value becomes false.
         ArrayList<Card> otherOptions = new ArrayList<>();
 
 
@@ -68,7 +68,7 @@ public class RegularBotUser extends AbstractUser {
         }
 
 
-        while (!isCardAssigned) { //atacak bir kart seçilene kadar while döngüsü döner
+        while (!isCardAssigned) { //The while loop continues until a card to play is selected.
 
             if (isMatchedCardUsefull) {
                 isCardAssigned = true;
@@ -113,7 +113,7 @@ public class RegularBotUser extends AbstractUser {
                     }
                     return otherOptions.get(minValueIndex);
                     //expert bot
-                } else { //ortadan kart almak zorundayız çünkü elimizde sadece J ve topcarda eşit kartlar var
+                } else { //We have to take a card from the middle because we only have J cards, and the top card is the same as the cards in our hand.
                     isCardAssigned = true;
                     return getCurrentCards().get(0);
 
@@ -127,7 +127,7 @@ public class RegularBotUser extends AbstractUser {
         return null;
     }
 
-    public void findTopCard(ArrayList<Card> board) {
+    public void findTopCard(ArrayList<Card> board) {//This function is used to find the top card on the board.
         if (board.size() > 0) {
             this.topCard = board.get(board.size() - 1);
         } else {
@@ -135,7 +135,7 @@ public class RegularBotUser extends AbstractUser {
         }
     }
 
-    public void calculateTotalBoardPoint(ArrayList<Card> board) { //null hatası gelebilir
+    public void calculateTotalBoardPoint(ArrayList<Card> board) { //This function is used to calculate the total score of the cards in board.
         if (topCard == null) {
             totalBoardPoint = 0;
         } else {
