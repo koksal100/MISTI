@@ -22,7 +22,7 @@ public class Card {
 
 
     public String getCardName() {
-        return suit + cardFace+"  ";
+        return suit + cardFace;
     }
 
     public String getSuit() {

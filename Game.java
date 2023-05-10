@@ -74,18 +74,18 @@ public class Game {
                 printBoard(board);
             }
             if (isVerbose) {
+                System.out.println();
                 System.out.println("Hand " + (i + 1));
                 for (AbstractUser player : players) {
                     player.showCurrentCards();
                     System.out.println("SCORE:" + player.getScore());
                 }
                 for (int a = 0; a < 4; a++) {
-                    System.out.print((++tableTurn) + "--Table Turn →→ ");
+                    System.out.print((++tableTurn)+"  ");
                     for (int userIndex = 0; userIndex < players.size(); userIndex++) {
                         keepTrackForBots(players, board);
                         players.get(userIndex).playCardTo(board);
-                        System.out.print("Played Card"+board.get(board.size() - 1).getCardName());
-                        System.out.println();
+                        System.out.print(board.get(board.size()-1).getCardName());
                         keepTrackForBots(players, board);
                         evaluatePlayedCard(players.get(userIndex), board,isVerbose);
                     }
@@ -137,7 +137,6 @@ public class Game {
         }
         collectLastCards(lastWinner, board);
         whoHasMostCards(players);
-        printBoard(board);
         System.out.println("GAME IS FINISHED");
         for (AbstractUser user : players) {
             System.out.println(user.getName() + "'s score is:" + user.getScore());
@@ -437,7 +436,6 @@ public class Game {
         //this function must be called before the board cards are moved to the user's collected cards.
         if (boardCards.size() == 2) {
             if (boardCards.get(0).getCardface().equals(boardCards.get(1).getCardface())) {
-                System.out.println(user.getName()+ " HAS MADE MISTI");
                 for (Card card : boardCards) {
                     user.setScore(user.getScore() + card.getValue() * 5);
                 }
@@ -470,7 +468,6 @@ public class Game {
 
             }
         }
-        printBoard(boardCards);
     }
 
     public static void collectLastCards(AbstractUser user, ArrayList<Card> board) {
