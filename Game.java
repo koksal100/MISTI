@@ -100,8 +100,9 @@ public class Game {
                             user.playCardTo(board);
                             System.out.println(user.getName()+"has played " + board.get(board.size()-1).getCardName());
                             keepTrackForBots(players, board);
+
                             evaluatePlayedCard(user, board,isVerbose);
-                            keepTrackForBots(players, board);
+                            printBoard(board);
                             System.out.println(user.getName() + "'s score is: " + user.getScore());
                         }
 
@@ -120,10 +121,9 @@ public class Game {
                             keepTrackForBots(players, board);
 
 
-                            printBoard(board);
-
                             evaluatePlayedCard(user, board,isVerbose);
                             System.out.println(user.getName() + "'s score is: " + user.getScore());
+                            System.out.println("════════════════════════════════════════");
                         }
                     }
                 }
