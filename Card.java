@@ -10,7 +10,7 @@ public class Card {
     private String suit;
     private String cardFace;
 
-    private final static String fileAddress = getFileName();
+    private  static String fileAddress;
 
     Card(String suit, String cardface) {
         setCardface(cardface);
@@ -75,12 +75,17 @@ public class Card {
 
     }
 
-    public static String getFileName() {
+    public static void getFileName(String filePath) {
+        if(Files.exists(Paths.get(filePath))&&!filePath.equals("")){
+            System.out.println("FILE IS FOUND!");
+            fileAddress=filePath;
+            return;
+        }
         Scanner scan = new Scanner(System.in);
         Path path;
         String fileName ;
         while (true) {
-            System.out.println("PLEASE GIVE THE ADDRESS OF THE FILE:");
+            System.out.println("PLEASE GIVE THE TRUE ADDRESS OF THE FILE:");
             fileName = scan.nextLine();
             path = Paths.get(fileName);
             if (Files.exists(path) && !fileName.equals("")) {
@@ -91,6 +96,6 @@ public class Card {
             }
         }
 
-        return fileName;
+        fileAddress=fileName;
     }
 }
