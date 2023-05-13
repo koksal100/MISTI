@@ -412,7 +412,8 @@ public class Game {
             }
 
         } catch (Exception e) {
-            System.out.println("SOMETHING WENT WRONG!");
+            System.out.println("TOP TEN USER FILE WILL BE AVAILABLE AT THE END OF THE GAME");
+
         }
 
     }
