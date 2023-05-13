@@ -2,9 +2,9 @@ RegularBot 1, 382, RegularBotUser
 RegularBot 1, 262, RegularBotUser
 NoviceBot 2, 257, NoviceBotUser
 RegularBot 1, 253, RegularBotUser
+RegularBot 1, 247, RegularBotUser
 RegularBot 1, 245, RegularBotUser
 ExpertBot 1, 239, ExpertBotUser
 ExpertBot 1, 230, ExpertBotUser
 ExpertBot 1, 229, ExpertBotUser
 RegularBot 1, 215, RegularBotUser
-ExpertBot 1, 197, ExpertBotUser

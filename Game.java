@@ -11,9 +11,19 @@ public class Game {
     public static Scanner scanner = new Scanner(System.in);
     public static AbstractUser lastWinner;
 
+
     public static void main(String[] args) {
 
         //Preparing cards for game
+        if(args.length<1){
+            System.out.println("AN ARGUMENT MUST BE GIVEN TO THE PROGRAM");
+            System.out.println("PLEASE TRY TO GIVE THE ADDRES OF THE FILE");
+            String[] arguments= scanner.nextLine().split(" ");
+            main(arguments);
+            return;
+        }else{
+            Card.getFileName(args[0]);
+        }
         Deck deck = new Deck();
         ArrayList<AbstractUser> topTenUsers = new ArrayList<>();
         takeTopTenUsersFileTo(topTenUsers);
@@ -402,7 +412,8 @@ public class Game {
             }
 
         } catch (Exception e) {
-            System.out.println("SOMETHING WENT WRONG!");
+            System.out.println("TOP TEN USER FILE WILL BE AVAILABLE AT THE END OF THE GAME");
+
         }
 
     }
