@@ -58,7 +58,8 @@ public class Card {
                 informations = reader.nextLine().split(" ");
                 if ((this.getSuit() + this.getCardface()).equals(informations[0])
                         || ("*" + this.getCardface()).equals(informations[0])
-                        || (this.getSuit() + "*").equals(informations[0])) {
+                        || (this.getSuit() + "*").equals(informations[0])
+                        || informations[0].equals("**")) {
                     this.value = Integer.parseInt(informations[1]);
                     isAssigned = true;
                     break;
